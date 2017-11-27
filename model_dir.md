@@ -1,4 +1,4 @@
-# A/B Testing
+# ab_testing - A/B Testing
 ## CTR t-test:
 
 - Click Through Rate: Clicks / Impressions
@@ -9,12 +9,11 @@
 - By gender, by signed in vs. not signed in, and by age groups.
 
 
-# Experimental Design
+# ab_testing - Experimental Design
 ## Conversion rate z-test:
 
 
-
-# Bayesian Analysis
+# bayesian - Bayesian Analysis
 
 - Flip a fair coin: flip_coin.py
 - Flip a biased coin: flip_biased_coin.py
@@ -26,7 +25,7 @@
 
 
 
-# Cross Validation
+# cv_regularization - Cross Validation
 
 - **Training Set** - Used to train one, or more, models.
 - **Validation Set** - Used to tune hyperparameters of different models and choose the best performing model.
@@ -80,7 +79,7 @@ test_predicted = linear.predict(X_test)
     - RFE, Recursive Feature Elimination
 
 
-# Regularization: Ridge (Shrinkage) and Lasso
+# cv_regularization - Regularization: Ridge (Shrinkage) and Lasso
 ## Functions:
 
 1. `mse_ridge` and `mse_lasso`: mean squared error of Ridge / Lasso Regression
@@ -90,7 +89,7 @@ test_predicted = linear.predict(X_test)
 5. `best_choice`: Select a model based on the validation and training error curves.
 
 
-# Exploratory Data Analysis (EDA)
+# linear_algebra_eda - Exploratory Data Analysis (EDA)
 
 1. Clean columns and special data formats (datetime).
 2. Group by categorical variables. Check.
@@ -99,14 +98,14 @@ test_predicted = linear.predict(X_test)
 5. Boxplots for sub-groups.
 
 
-# Linear Algebra
+# linear_algebra_eda - Linear Algebra
 
 1. Stochastic process (matrix)
 2. Euclidean Distance
 3. Cosine similarity
 
 
-# Linear Regression Diagnosis
+# linear_regression - Linear Regression Diagnosis
 
 1. Import statsmodels.api as sm
 2. Scatter matrices
@@ -139,7 +138,7 @@ sm.qqplot(res, scs.norm, line='45', fit=True)
 
 
 
-# Linear Regression Case Study
+# linear_regression - Linear Regression Case Study
 
 1. Dummy variables. Need to drop base level.
 2. Fit model.
@@ -148,7 +147,7 @@ sm.qqplot(res, scs.norm, line='45', fit=True)
 5. Remove the data points below the decided threshold of your chosen variable and examine the number of zero observations that remain.
 6. Fit model again.
 
-# ROC (Receiver Operating Characteristic) curve
+# logistic - ROC (Receiver Operating Characteristic) curve
 
 1. ROC curve function `roc_curve`:
 
@@ -211,7 +210,7 @@ metrics.recall_score(y_test, y_pred)
 metrics.precision_score(y_test, y_pred)
 ```
 
-# Multi-armed Bandit Problem
+# multi_armed_bandit - Multi-armed Bandit Problem
 
 ## Bayesian A/B testing:
 While A/B testing with frequentist and Bayesian methods can be incredibly useful for determining the effectiveness of various changes to your products, better algorithms exist for making educated decision on-the-fly. Two such algorithms that typically out-perform A/B tests are extensions of the Multi-armed bandit problem which uses an epsilon-greedy strategy. Using a combination of exploration and exploitation, this strategy updates the model with each successive test, leading to higher overall click-through rate. An improvement on this algorithm uses an epsilon-first strategy called UCB1. Both can be used in lieu of traditional A/B testing to optimize products and click-through rates.
@@ -219,7 +218,7 @@ While A/B testing with frequentist and Bayesian methods can be incredibly useful
 1. Posterior after n views, updated by prior distributions beta
 2. simulating 10,000 points from site A's & B's beta distributions
 
-# Pandas 1
+# pandas_1 - Pandas 1
 ## Objectives:
 
 - Creating new columns
@@ -227,14 +226,14 @@ While A/B testing with frequentist and Bayesian methods can be incredibly useful
 - group by: by total, and by average of groups
 - order: group by, then aggregate function (.count(), .mean(), .sum()), lastly sort_values()
 
-# Pandas 2
+# pandas_2 - Pandas 2
 ## Objectives:
 
 - merge DataFrames on some columns
 - more mask/conditions
 
 
-# Plotting
+# plotting - Plotting
 ## Objectives:
 
 - random.randint
@@ -259,7 +258,7 @@ filepath = 'data/bay_area_bikeshare/201402_weather_data_v2.csv'
 weather = np.loadtxt(filepath, delimiter=',', skiprows=1, usecols=cols)
 ```
 
-# Power Analysis
+# power_analysis - Power Analysis
 
 ## Functions:
 ### One sample:
@@ -285,7 +284,7 @@ weather = np.loadtxt(filepath, delimiter=',', skiprows=1, usecols=cols)
    of choosing the alternative correctly if the true mean value is larger by 0.12 ounces.
    ```
 
-# Probability
+# probability - Probability
 ## Objectives:
 
 The following is a short review of the distributions.
@@ -334,7 +333,7 @@ The following is a short review of the distributions.
 - np.percentile
 
 
-# Boostrapping Method
+# sampling_estimation - Bootstrapping Method
 ## Functions:
 
 - Draw samples of random variables from a specified distribution, dist, with given parameters, params, return these in an array.
@@ -346,7 +345,7 @@ The following is a short review of the distributions.
 - Pearson correlation matrix.
 
 
-# Parametric Estimates
+# sampling_estimation - Parametric Estimates
 ## Functions:
 
 - Sample mean and variance
