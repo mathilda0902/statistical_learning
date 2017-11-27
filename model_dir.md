@@ -361,3 +361,24 @@ The following is a short review of the distributions.
   - stats.norm.fit
   - Plot pdf's.
 - Plot kde.
+
+
+- [x] completed:
+  1. ab_testing
+  2. bayesian
+  3. cv_regularization
+  4. linear_algebra_eda
+  5. linear_regression
+  6. logistic
+  7. multi_armed_bandit
+  8. pandas_1
+  9. pandas_2
+  10. plotting
+  11. power_analysis
+  12. probability
+  13. sampling_estimation
+
+- [ ] uncompleted:
+  1. Decision Trees
+  2. Bagging and Random Forests
+  3. Boosting
