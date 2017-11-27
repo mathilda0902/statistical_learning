@@ -12,16 +12,14 @@ function ROC_curve(probabilities, labels):
         Calculate the False Positive Rate (1 - specificity)
     Return three lists: TPRs, FPRs, thresholds
 ```
-
-    Recall that the *true positive rate* is
+Recall that the *true positive rate* is
 
 ```
  number of true positives     number correctly predicted positive
 -------------------------- = -------------------------------------
  number of positive cases           number of positive cases
 ```
-
-    and the *false positive rate* is
+and the *false positive rate* is
 
 ```
  number of false positives     number incorrectly predicted positive
