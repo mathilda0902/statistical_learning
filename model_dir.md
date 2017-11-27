@@ -384,7 +384,7 @@ The following is a short review of the distributions.
   - change `oob` to True. compare out-of-bag training accuracy score to test set.
   - feature importances
   - Calculate the standard deviation for feature importances across all trees
-  - # of trees and accuracy score
+  - number of trees and accuracy score
   - max features parameter and accuracy score
   - function `get_score(classifier, X_train, X_test, y_train, y_test, **kwargs)`:
     - return model.score(X_test, y_test), precision_score(y_test, y_predict), recall_score(y_test, y_predict)
@@ -451,3 +451,5 @@ The following is a short review of the distributions.
   16. Boosting
 
 - [ ] uncompleted:
+  1. knn
+  2. gradient descent
