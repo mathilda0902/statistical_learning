@@ -363,6 +363,7 @@ The following is a short review of the distributions.
 - Plot kde.
 
 
+# Summary of Progress:
 - [x] completed:
   1. ab_testing
   2. bayesian
