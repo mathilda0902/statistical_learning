@@ -30,7 +30,7 @@ def plot_roc(X, y, clf_class, **kwargs):
     mean_tpr[-1] = 1.0
     mean_auc = auc(mean_fpr, mean_tpr)
     plt.plot(mean_fpr, mean_tpr, 'k--',label='Mean ROC (area = %0.2f)' % mean_auc, lw=2)
-    
+
     plt.plot([0, 1], [0, 1], '--', color=(0.6, 0.6, 0.6), label='Random')
     plt.xlim([-0.05, 1.05])
     plt.ylim([-0.05, 1.05])

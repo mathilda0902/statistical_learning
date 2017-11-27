@@ -1,5 +1,6 @@
 from DecisionTree import DecisionTree
 import numpy as np
+from collections import Counter
 
 
 class RandomForest(object):
@@ -27,55 +28,41 @@ class RandomForest(object):
     def build_forest(self, X, y, num_trees, num_samples, num_features):
         '''
         Return a list of num_trees DecisionTrees.
-
-         Repeat num_trees times:
-         Create a random sample of the data with replacement
-         Build a decision tree with that sample
-         Return the list of the decision trees created
         '''
-        decisiontree_list = []
-        for n in range(self.num_trees):
-            bs_index = np.random.choice(X.shape[0], num_samples)
-            bs_X = X[bs_index]
-            bs_y = y[bs_index]
-            tree = DecisionTree(self.num_features)
-            tree.fit(bs_X, bs_y)
-            decisiontree_list.append(tree)
-        return decisiontree_list
+        forest = []
+        for i in xrange(num_trees):
+            sample_indices = np.random.choice(X.shape[0], num_samples, \
+                                              replace=True)
+            sample_X = np.array(X[sample_indices])
+            sample_y = np.array(y[sample_indices])
+            dt = DecisionTree(num_features=self.num_features)
+            dt.fit(sample_X, sample_y)
+            forest.append(dt)
+        return forest
 
     def predict(self, X):
         '''
         Return a numpy array of the labels predicted for the given test data.
         '''
-        output = []
-        for tree in self.build_forest:
-            output.append(tree.predict(X))
-        return output
-
+        answers = np.array([tree.predict(X) for tree in self.forest]).T
+        return np.array([Counter(row).most_common(1)[0][0] for row in answers])
 
     def score(self, X, y):
         '''
         Return the accuracy of the Random Forest for the given test data and
         labels.
         '''
-        pass
+        return sum(self.predict(X) == y) / float(len(y))
 
+if __name__ == '__main__':
+    from sklearn.cross_validation import train_test_split
+    import pandas as pd
 
-'''
-from RandomForest import RandomForest
-from sklearn.model_selection import train_test_split
-import numpy as np
-import pandas as pd
+    df = pd.read_csv('../data/congressional_voting.csv', names=['Party']+range(1, 17))
+    y = df.pop('Party').values
+    X = df.values
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
 
-df = pd.read_csv('../data/playgolf.csv')
-y = df.pop('Result').values
-X = df.values
-X_train, X_test, y_train, y_test = train_test_split(X, y)
-
-rf = RandomForest(num_trees=3, num_features=2)
-rf.fit(X_train, y_train)
-rf.build_forest(X_train, y_train, num_trees=3, num_samples=len(X_train), num_features=2)
-y_predict = rf.predict(X_test)
-print "predict", rf.predict(X_test)
-print "score:", rf.score(X_test, y_test)
-'''
+    rf = RandomForest(num_trees=10, num_features=10)
+    rf.fit(X_train, y_train)
+    print "Random Forest score:", rf.score(X_test, y_test)
