@@ -3,9 +3,9 @@
 
 - Click Through Rate: Clicks / Impressions
 - Independent t test:
-  - scs.ttest_ind(df_ctr_signed_in['CTR'].dropna(), df_ctr_not_signed['CTR'].dropna(), equal_var = False)
+  - `scs.ttest_ind(df_ctr_signed_in['CTR'].dropna(), df_ctr_not_signed['CTR'].dropna(), equal_var = False)`
 - p value:
-  - p_val = stats.ttest_ind(group_1_df['CTR'], group_2_df['CTR'], equal_var=False)[1]
+  - `p_val = stats.ttest_ind(group_1_df['CTR'], group_2_df['CTR'], equal_var=False)[1]`
 - By gender, by signed in vs. not signed in, and by age groups.
 
 
@@ -451,4 +451,3 @@ The following is a short review of the distributions.
   16. Boosting
 
 - [ ] uncompleted:
-  
