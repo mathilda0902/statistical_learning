@@ -363,6 +363,15 @@ The following is a short review of the distributions.
 - Plot kde.
 
 
+# decision_trees - Decision Trees
+1. Decision trees implementation
+2. Decision trees regressor
+3. knn
+4. Recursion practice
+
+
+
+
 # Summary of Progress:
 - [x] completed:
   1. ab_testing
@@ -378,8 +387,8 @@ The following is a short review of the distributions.
   11. power_analysis
   12. probability
   13. sampling_estimation
+  14. decision_trees
+  15. random_forest
 
 - [ ] uncompleted:
-  1. Decision Trees
-  2. Bagging and Random Forests
-  3. Boosting
+  1. Boosting
