@@ -29,7 +29,7 @@ and the *false positive rate* is
 
 2. Use pandas `crosstab` to get a pivot table: `pd.crosstab(col1, col2)`
 
-3. Use statsmodels to fit a Logistic Regression:
+3. Use `Scikit Learn` to fit a Logistic Regression:
 
 ```
 from sklearn.linear_model import LogisticRegression
