@@ -13,7 +13,6 @@
 - describe overfitting and underfitting
   - When a model has been trained for too many times or its complexity is too high, overfitting happens. In this case, the model can very well predict the training data, but when applied to testing data, it's expected to deviate/have large variances from the true results. The degrees that model fits very closely to the training set is called a low bias, while the large variances of the testing data is called high variance. This is a bias-variance trade-off. Underfitting is the reverse.
 - explain how to compare models and select the best one
-  -
 
 
 # Regularization
