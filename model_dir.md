@@ -461,3 +461,4 @@ The following is a short review of the distributions.
 - [ ] uncompleted:
   1. knn
   2. gradient descent
+  3. nlp
