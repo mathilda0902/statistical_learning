@@ -36,9 +36,25 @@
 - Understand hyperparameters associated to Boosting
   (learning rate, number of estimators ...)
 - GridSearch for optimal hyperparameters for Boosting:
-
 - Performance of Boosting compared to other machine learning algorithms
 - Difference between gradient boosting and random forest:
   1. Gradient boosting is a sequential algorithm while random forest grows trees parallel. In random forests each tree is growing independently. To achieve high accucary, RF uses BAGGING (bootstrap aggregating) but is prone to overfitting.
     - BAGGING: drawing sample from training data uniformly and with replacement.
   2. Gradient boosting has shallow trees as its weak learners (stumps with only 2 leaves). It reduces error by reducing bias. RF uses full grown trees with low bias and high variance. RF reduces error by reducing variance. The trees in RF are designed to be uncorrelated, thus maximizing the decrease in variance.
+
+
+# Tuning hyper-parameters
+- General Approach for Parameter Tuning
+  - There are two types of parameter to be tuned here – tree based and boosting parameters.
+    1. Choose a relatively high learning rate. Generally the default value of 0.1 works but somewhere between 0.05 to 0.2 should work for different problems
+    2. Determine the optimum number of trees for this learning rate. This should range around 40-70. Remember to choose a value on which your system can work fairly fast. This is because it will be used for testing various scenarios and determining the tree parameters.
+    3. Tune tree-specific parameters for decided learning rate and number of trees. Note that we can choose different parameters to define a tree and I’ll take up an example here.
+    4. Lower the learning rate and increase the estimators proportionally to get more robust models.
+    5. Fix learning rate and number of estimators for tuning tree-based parameters
+    6. In order to decide on boosting parameters, we need to set some initial values of other parameters. Lets take the following values:
+      1. min_samples_split = 500 : This should be ~0.5-1% of total values. Since this is imbalanced class problem, we’ll take a small value from the range.
+      2. min_samples_leaf = 50 : Can be selected based on intuition. This is just used for preventing overfitting and again a small value because of imbalanced classes.
+      3. max_depth = 8 : Should be chosen (5-8) based on the number of observations and predictors. This has 87K rows and 49 columns so lets take 8 here.
+      4. max_features = ‘sqrt’ : Its a general thumb-rule to start with square root.
+      5. subsample = 0.8 : This is a commonly used used start value
+  Please note that all the above are just initial estimates and will be tuned later. Lets take the default learning rate of 0.1 here and check the optimum number of trees for that. For this purpose, we can do a grid search and test out values from 20 to 80 in steps of 10.
