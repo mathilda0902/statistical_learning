@@ -23,10 +23,10 @@
         `AdaBoostRegressor(DecisionTreeRegressor(), learning_rate=0.1, loss='linear', n_estimators=100, andom_state=1)`
     - `def stage_score_plot(estimator, X_train, y_train, X_test, y_test)`:
         - Parameters: estimator: GradientBoostingRegressor or AdaBoostRegressor
-                        X_train: 2d numpy array
-                        y_train: 1d numpy array
-                        X_test: 2d numpy array
-                        y_test: 1d numpy array
+          - X_train: 2d numpy array
+          - y_train: 1d numpy array
+          - X_test: 2d numpy array
+          - y_test: 1d numpy array
         - Returns: A plot of the number of iterations vs the MSE for the model for both the training set and test set.
     - Grid search
 
