@@ -7,7 +7,15 @@
 - p value:
   - `p_val = stats.ttest_ind(group_1_df['CTR'], group_2_df['CTR'], equal_var=False)[1]`
 - By gender, by signed in vs. not signed in, and by age groups.
-
+- Calculate and return an estimated probability that SiteA performs better
+(has a higher click-through rate) than SiteB. Hint: Use Bayesian A/B Testing
+```
+    def calculate_clickthrough_prob(clicks_A, views_A, clicks_B, views_B):
+        sample_size = 10000
+        A_samples = beta_dist(1 + clicks_A, 1 + views_A - clicks_A, sample_size)
+        B_samples = beta_dist(1 + clicks_B, 1 + views_B - clicks_B, sample_size)
+        return np.mean(A_samples > B_samples)
+```
 
 # ab_testing - Experimental Design
 ## Conversion rate z-test:
