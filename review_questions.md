@@ -31,9 +31,12 @@
 - Boosting for classification problems (GradientBoostingClassifier)
   - In the case of classification problems, instead of MSE, we can test models for metrics including precision, recall, accuracy, f1 score, etc.
 - Difference between AdaBoost and Gradient Boosting
+  - They both use weak learners to arrive at a strong learner by aggregating (addition). They differ at the iterative process where the weak learners are created. Adaboost creates weak learners by changing the weights attached to each instance. By increasing the weights of wrong predictions (difficult ones) and decreasing the weights of correct predictions (easy ones), Adaboost aggregate weak learners by their (contribution) votes to the strong learner. If a weak learner has strong performance (a high alpha-weight), it has more contribution to the strong learner. These updated weights indicates a changing sample distribution.
+  - During the gradient boosting iterative process, instead of changing sample distribution, the weak learners are trained on the remaining errors (pseudo-residuals) of the strong learner. The weak learners' contributions are not evaluated on its performance on the sample distribution, but by using the gradient descent optimization process. The final outcome is the one minimizing the overall error of the strong learner.
 - Understand hyperparameters associated to Boosting
   (learning rate, number of estimators ...)
-- GridSearch for optimal hyperparameters for Boosting
+- GridSearch for optimal hyperparameters for Boosting:
+
 - Performance of Boosting compared to other machine learning algorithms
 - Difference between gradient boosting and random forest:
   1. Gradient boosting is a sequential algorithm while random forest grows trees parallel. In random forests each tree is growing independently. To achieve high accucary, RF uses BAGGING (bootstrap aggregating) but is prone to overfitting.
