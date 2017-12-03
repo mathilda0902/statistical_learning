@@ -16,89 +16,170 @@ KNearestNeighbors class has three methods:
  - predict
  - accuracy score
 '''
-
 import numpy as np
+import pandas as pd
+from collections import Counter
+from itertools import izip
+from sklearn.datasets import make_classification
+from matplotlib.colors import ListedColormap
+import matplotlib.pyplot as plt
+import sys
 from itertools import combinations
 
-class kNN(object):
-    def __init__(self, k, distance):
+def plot_decision_boundary(clf, X, y, n_classes):
+    """Plot the decision boundary of a kNN classifier.
+    Plots decision boundary for up to 4 classes.
+    Colors have been specifically chosen to be color blindness friendly.
+    Assumes classifier, clf, has a .predict() method that follows the
+    sci-kit learn functionality.
+    X must contain only 2 continuous features.
+    Function modeled on sci-kit learn example.
+    Parameters
+    ----------
+    clf: instance of classifier object
+        A fitted classifier with a .predict() method.
+    X: numpy array, shape = [n_samples, n_features]
+        Test data.
+    y: numpy array, shape = [n_samples,]
+        Target labels.
+    n_classes: int
+        The number of classes in the target labels.
+    """
+    mesh_step_size = .2
+
+    # Colors are in the order [red, yellow, blue, cyan]
+    cmap_light = ListedColormap(['#FFAAAA', '#FFFFAA', '#AAAAFF', '#AAFFFF'])
+    cmap_bold = ListedColormap(['#FF0000', '#FFFF00', '#0000FF', '#00FFFF'])
+
+    # Plot the decision boundary. For that, we will assign a color to each
+    # point in the mesh [x_min, m_max]x[y_min, y_max].
+    feature_1 = X[:, 0]
+    feature_2 = X[:, 1]
+    x_min, x_max = feature_1.min() - 1, feature_1.max() + 1
+    y_min, y_max = feature_2.min() - 1, feature_2.max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, mesh_step_size),
+                         np.arange(y_min, y_max, mesh_step_size))
+    dec_boundary = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+
+    # Put the result into a color plot
+    dec_boundary = dec_boundary.reshape(xx.shape)
+    plt.figure()
+    plt.pcolormesh(xx, yy, dec_boundary, cmap=cmap_light)
+
+    # Plot also the training points
+    plt.scatter(feature_1, feature_2, c=y, cmap=cmap_bold)
+    plt.xlim(xx.min(), xx.max())
+    plt.ylim(yy.min(), yy.max())
+
+    plt.title(
+              "{0}-Class classification (k = {1}, metric = '{2}')"
+              .format(n_classes, clf.k, clf.distance))
+    plt.show()
+
+def euclidean_distance(arr1, arr2):
+    """Compute the euclidean_distance between two numpy arrays.
+    Parameters
+    ----------
+    a: numpy array
+    b: numpy array
+    Returns
+    -------
+    numpy array
+    """
+    diff = arr1 - arr2
+    return np.sqrt(diff.dot(diff))
+
+def cosine_distance(arr1, arr2):
+    """Compute the cosine_distance between two numpy arrays.
+    Parameters
+    ----------
+    a: numpy array
+    b: numpy array
+    Returns
+    -------
+    """
+    num = arr1.dot(arr2)
+    denom = np.sqrt(arr1.dot(arr1) * arr2.dot(arr2))
+    return 1 - num / float(denom)
+
+class KNearestNeighbors(object):
+    def __init__(self, k=5, distance=euclidean_distance):
         ''' k: number of points with the smallest distances to each data point
             distance: Euclidean distance or cosine distance
+            Initialize a KNearestNeighbors object.
         '''
         self.k = k
         self.distance = distance
 
-    def _euclidean_distance(self, arr1, arr2):
-        diff = arr1 - arr2
-        return np.sqrt(diff.dot(diff))
-
-    def _cosine_distance(self, arr1, arr2):
-        num = arr1.dot(arr2)
-        denom = np.sqrt(arr1.dot(arr1) * arr2.got(arr2))
-        return 1 - num / float(denom)
-
     def fit(self, X, y):
-        '''     X:  two dimensional numpy array representing feature matrix
-                for test data
-                y:  numpy array representing labels for test data'''
+        """Fit the model using X as training data and y as target labels.
+        According to kNN algorithm, the training data is simply stored.
+        Parameters
+        ----------
+        X: numpy array, shape = [n_samples, n_features]
+            Training data.
+        y: numpy array, shape = [n_samples,]
+            Target labels.
+        Returns
+        -------
+        None
+        """
+        self.X_train = X
+        self.y_train = y
 
-        distance = []
-        index_set = set()
-        for (idx1, arr1), (idx2,arr2) in combinations(enumerate(X), 2):
-            if self.distance == 'euclidean_distance':
-                lst = [idx1, idx2, self._euclidean_distance(arr1, arr2)]
-            elif self.distance == 'cosine_distance':
-                lst = [idx1, idx2, self._cosine_distance(arr1, arr2)]
-            distance.append(lst)
-            index_set.add(idx1)
-            index_set.add(idx2)
+    def predict(self, X):
+        num_train_rows, num_train_cols = self.X_train.shape
+        num_X_rows, _ = X.shape
+        X = X.reshape((-1, num_train_cols))
+        distances = np.zeros((num_X_rows, num_train_rows))
+        for i, x in enumerate(X):
+            for j, x_train in enumerate(self.X_train):
+                distances[i, j] = self.distance(x_train, x)
+        # Sort and take top k
+        top_k = self.y_train[distances.argsort()[:, :self.k]]
+        result = np.zeros(num_X_rows)
+        for i, values in enumerate(top_k):
+            top_voted_label, _ = Counter(values).most_common(1)[0]
+            result[i] = top_voted_label
+        return result
 
-        vote_X = []
-        for ind in index_set:
-            vote_id1 = []
-            for other_pair in distance:
-                if ind == other_pair[0]:
-                    vote_id1.append(other_pair[1:])
-            new_vote = sorted(vote_id1, key=lambda x: x[1])[:((self.k)+1)]
-            tot_votes = 0
-            for vote in new_vote:
-                tot_votes += y[vote[0]]
-            if tot_votes >= self.k * 0.5:
-                response = 1
-            else:
-                response = 0
-            vote_X.append([X[ind], response])
-        return vote_X
-
-
-
-    def predict(self, X, y):
-        pass
-
-    def score(self, X, y):
-        pass
-
-
-
-
-
-
+    def score(self, X, y_true):
+        """Return the mean accuracy on the given data and true labels.
+        Parameters
+        ----------
+        X: numpy array, shape = [n_samples, n_features]
+            Test data.
+        y_true: numpy array, shape = [n_samples,]
+            True labels for given test data, X.
+        Returns
+        -------
+        score: float
+            Mean accuracy of self.predict(X) given true labels, y_true.
+        """
+        y_pred = self.predict(X)
+        score = y_true == y_pred
+        return np.average(score)
 
 
 if __name__ == '__main__':
-    '''making fake data'''
-    from sklearn.datasets import make_classification
+    X, y = make_classification(n_classes=3, n_features=2, n_redundant=0,
+                               n_informative=2, n_clusters_per_class=1,
+                               class_sep=1, random_state=5)
+    print y.shape
 
-    X, y = make_classification(n_features=4, n_redundant=0, n_informative=1,
-                               n_clusters_per_class=1, class_sep=5, random_state=5)
-
-    '''implement class KNearestNeighbors'''
-    from KNearestNeighbors import kNN
-
-    knn = kNN(k=3, distance='euclidean_distance')
-    pred = knn.fit(X, y)
-    output = [a[1] for a in pred]
-    print output
-    print sum(output - y)
-    #print len(pred), len(X), len(y)
-    #y_predict = knn.predict(X_new)
+    knn = KNearestNeighbors(4, cosine_distance)
+    knn.fit(X, y)
+    print "This is the accuracy: {}".format(knn.score(X, y))
+    print "\tactual\tpredict\tcorrect?"
+    for i, (actual, predicted) in enumerate(izip(y, knn.predict(X))):
+        print "%d\t%d\t%d\t%d" % (i,
+                                  actual,
+                                  predicted,
+                                  int(actual == predicted))
+    print (actual - predicted).sum()
+    # This loop plots the decision boundaries for different decision metrics
+    for metric in [euclidean_distance, cosine_distance]:
+        # we create an instance of Neighbours Classifier and fit the data.
+        clf = KNearestNeighbors(k=3, distance=metric)
+        clf.fit(X, y)
+        plot_decision_boundary(clf, X, y, n_classes=3)
