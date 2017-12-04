@@ -1,0 +1,27 @@
+mongoimport --db clicks --collection log < click_log.json
+
+In Mongo shell:
+> show dbs
+> use clicks
+> show collections
+> db.log.find().pretty().limit(10)
+> db.log.findOne()
+> db.log.find({cy: 'San Francisco'}).count()
+
+Find all distinct types of web browsers (field name: 'a') people use to visit the sites.
+> db.log.distinct('a')
+Count the number of distinct web browsers (use .length on distinct list).
+> db.log.distinct('a').length
+559
+
+Select and count the records where the users have visited a website either from a Mozilla or an Opera web browser. Search the a field using regex in mongo.
+> db.log.find({$or: [{a: /Mozilla/},{a: /Opera/}]}).pretty()
+Count distinct.
+> db.log.find({$or: [{a: /Mozilla/},{a: /Opera/}]}).pretty().count()
+2830
+
+Find the type of the t (timestamp) field. You can access the type of a field in an entry by using typeof db.log.findOne({'t': {$exists: true}}).t. The field should be a number now.
+> db.log.findOne({'t': {$exists: true}}).t
+1368774597
+
+> mongoimport --db newdb --collection my_own_collection < some_json_file.json
