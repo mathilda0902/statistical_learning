@@ -46,7 +46,7 @@ def predict(X, coeffs, thresh=0.5):
     probs = predict_proba(X, coeffs)
     return probs >= thresh
 
-def cost(X, y, coeffs):
+def cost(X, y, coeffs, lam=0.0, has_intercept=True):
     """
     Calculate the logistic cost function of the data with the given
     coefficients.
@@ -68,18 +68,57 @@ def cost(X, y, coeffs):
     cost1 = - np.log(predict_proba(X, coeffs)) * y
     cost2 = - np.log(1 - predict_proba(X, coeffs)) * (1 - y)
     cost = cost1 + cost2
-    cost = cost.sum() / float(len(X[0]))
-    return cost
+    cost = cost.sum()
+    ridge_penalty = np.sum(coeffs * coeffs)
+    if has_intercept:
+        ridge_penalty -= coeffs[0] * coeffs[0]
+    return cost - lam * ridge_penalty
 
-def gradient(X, y, coeffs):
-    gradient = []
-    for i in range(len(coeffs)):
-        derivative_i = (predict_proba(X, coeffs) - y) * X[:, i]
-        derivative = derivative_i.sum()
-        gradient.append(derivative)
-    return np.array(gradient)
+def cost_one_datapoint(x, y, coeffs):
+    """
+    Calculate the logistic cost function of a single data point using the given
+    coefficients.
+    Parameters
+    ----------
+    x: ndarray, shape (n_features, )
+        The data (independent variables) to use for prediction.
+    y: Integer, 0 or 1
+        The actual class values of the response.
+    coeffs: ndarray, shape (n_features)
+        The hypothosized coefficients of the logistic regression.
+    Returns
+    -------
+    logistic_cost: float
+        The computed logistic cost.
+    """
+    linear_pred = np.sum(x * coeffs)
+    p = 1 / (1 + np.exp(-linear_pred))
+    return (- y * np.log(p) - (1 - y) * np.log(1 - p))
 
+def gradient(X, y, coeffs, lam=0.0, has_intercept=True):
+    p = predict_proba(X, coeffs)
+    ridge_grad = 2 * coeffs
+    if has_intercept:
+        ridge_grad[0] = 0.0
+    return np.dot(X.T, p - y) + lam * ridge_grad
 
-
-if __name__ == '__main__':
-    pass
+def gradient_one_datapoint(x, y, coeffs):
+    """
+    Calculate the gradient of the logistic cost function evaluated at a single
+    data point.
+    Parameters
+    ----------
+    x: ndarray, shape (n_features, )
+        The data (independent variables) to use for prediction.
+    y: Integer, 0 or 1
+        The actual class values of the response.
+    coeffs: ndarray, shape (n_features)
+        The hypothosized coefficients of the logistic regression.
+    Returns
+    -------
+    logistic_grad: ndarray, shape (n_features, )
+        The computed gradient of the logistic cost.
+    """
+    linear_pred = np.sum(x * coeffs)
+    p = 1 / (1 + np.exp(-linear_pred))
+    return (x * (p - y))
