@@ -19,4 +19,11 @@
   - Disadvantage:
     1. Need to determine value of parameter K (number of nearest neighbors).
     2. Distance based learning is not clear which type of distance to use and which attribute to use to produce the best results.
-    3. Computation cost is quite high because we need to compute distance of each query instance to all training samples. 
+    3. Computation cost is quite high because we need to compute distance of each query instance to all training samples.
+
+- Room for improvement:
+  - KD tree for faster generalized N-point problems.
+  http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KDTree.html#sklearn.neighbors.KDTree
+  - `class sklearn.neighbors.KNeighborsClassifier`:
+    - algorithm : {‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}, optional
+    - leaf_size : int, optional (default = 30) Leaf size passed to BallTree or KDTree. This can affect the speed of the construction and query, as well as the memory required to store the tree. The optimal value depends on the nature of the problem.

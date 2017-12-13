@@ -1,3 +1,96 @@
+# General Workflow for working with sklearn:
+```
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+# Load data from csv file
+df = pd.read_csv('data/housing_prices.csv')
+X = df[['square_feet', 'num_rooms']].values
+y = df['price'].values
+
+# Split into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15)
+
+# Run Linear Regression
+regr = LinearRegression()
+regr.fit(X_train, y_train)
+print "Intercept:", regr.intercept_
+print "Coefficients:", regr.coef_
+print "R^2 error:", regr.score(X_test, y_test)
+predicted_y = regr.predict(X_test)
+```
+
+# Example using KFold:
+```
+from sklearn import model_selection
+kf = model_selection.KFold(X.shape[0], n_folds=5, shuffle=True)
+results = []
+for train_index, test_index in kf:
+    regr = LinearRegression()
+    regr.fit(X[train_index], y[train_index])
+    results.append(regr.score(X[test_index], y[test_index]))
+print "average score:", np.mean(results)
+```
+
+ - `sklearn.metrics.mean_squared_error()`
+ - `sklearn.cross_validation.cross_val_score()`. ref: http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.cross_val_score.html
+ - `sklearn.feature_selection.RFE`. ref: http://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFE.html
+ - mse of Ridge:
+  ```
+  import numpy as np
+  import matplotlib.pyplot as plt
+  from sklearn.datasets import load_diabetes
+  from sklearn.preprocessing import scale
+  from sklearn.cross_validation import KFold
+  from sklearn.metrics import mean_squared_error
+  import matplotlib.pyplot as plt
+  from sklearn.cross_validation import train_test_split
+  from sklearn.linear_model import Ridge, Lasso, RidgeCV, \
+  										LassoCV, LinearRegression
+
+  def mse_ridge(alpha=0.5):
+  	ridge = Ridge(alpha=alpha)
+  	fit = ridge.fit(X_train, y_train)
+  	y_pred = ridge.predict(X_test)
+  	return mean_squared_error(y_test, y_pred)
+  ```
+  - mse of Lasso:
+  ```
+  def mse_lasso(alpha=0.5):
+	lasso = Lasso(alpha=alpha)
+	fit = lasso.fit(X_train, y_train)
+	y_pred = lasso.predict(X_test)
+	return mean_squared_error(y_test, y_pred)
+  ```
+  - KFold cross validation model:
+  ```
+  def KFoldCVModel(model, kf, n_folds=10):
+      train_error = np.empty(n_folds)
+      val_error = np.empty(n_folds)
+      for i, (train, validation) in enumerate(kf):
+          model.fit(X_train[train], y_train[train])
+          train_error[i] = mean_squared_error(y_train[train],
+  										model.predict(X_train[train]))
+          val_error[i] = mean_squared_error(y_train[validation],
+  										model.predict(X_train[validation]))
+      return train_error, val_error
+  ```
+  - cross validation to test best alpha:
+  ```
+  def test_alphas(model, alphas = np.linspace(0, 20, 400)):
+  	k_fold_train_error = np.zeros(len(alphas))
+  	k_fold_test_error = np.zeros(len(alphas))
+  	for i, a in enumerate(alphas):
+  	    ridge = model(alpha=a, normalize=True)
+  	    kf = KFold(X_train.shape[0], n_folds=10)
+  	    train_error, test_error = KFoldCVModel(ridge, kf)
+  	    k_fold_train_error[i] = np.mean(train_error)
+  	    k_fold_test_error[i] = np.mean(test_error)
+  	return k_fold_train_error, k_fold_test_error
+  ```
+
+
 # ab_testing - A/B Testing
 ## CTR t-test:
 
@@ -20,7 +113,6 @@
 # ab_testing - Experimental Design
 ## Conversion rate z-test:
 
-
 # bayesian - Bayesian Analysis
 
 - Flip a fair coin: flip_coin.py
@@ -31,9 +123,17 @@
     3. print distribution
     4. plot
 
+# Bias and Variances
+- If you get low training error and high testing error, what do you think is happening and what can you do about it?
+- The variance of the training model is getting high. This is an indicator that the model that is being tested fits very well to the training data set, with possibly minimum bias. The low bias is reflected in the low training errors. If we would like to lower our testing error when applying our model to the testing set, we will have to sacrifice some variance of our model to achieve this.
 
+- What is the RSS for a model's predictions?
+- eg: The difference between each point and its prediction, the residual, is: [4.7, 0.1, -5.7, -7.8, 8.6], which we will then square to get [22.09, 0.01, 32.49, 60.84, 73.96], and sum, to arrive at an RSS of 189.89.
 
 # cv_regularization - Cross Validation
+- Why do we often prefer to use k-Fold Cross Validation instead of a simple train/test split?
+- In k-fold cross-validation, the original sample is randomly partitioned into k equal sized subsamples. Of the k subsamples, a single subsample is retained as the validation data for testing the model, and the remaining k − 1 subsamples are used as training data. The cross-validation process is then repeated k times (the folds), with each of the k subsamples used exactly once as the validation data. The k results from the folds can then be averaged to produce a single estimation. The advantage of this method over repeated random sub-sampling is that all observations are used for both training and validation, and each observation is used for validation exactly once. 10-fold cross-validation is commonly used, but in general k remains an unfixed parameter.
+
 
 - **Training Set** - Used to train one, or more, models.
 - **Validation Set** - Used to tune hyperparameters of different models and choose the best performing model.
@@ -217,6 +317,18 @@ metrics.accuracy_score(y_test, y_pred)
 metrics.recall_score(y_test, y_pred)
 metrics.precision_score(y_test, y_pred)
 ```
+
+6. Beta coefficient interpretation:
+  - Increasing the `GRE score` by `1 point` increases the chance of getting in `by a factor` of `1.00189`.
+  - What change is required to double my chances of admission?
+  - `log(2) / coef`: Increasing the GRE score by 367 points doubles the chance of getting in.
+
+7. Compute the odds (p/(1-p)):
+  ```
+  probabilities_rank = model.predict_proba(X_rank)[:, 1]
+  for rank, prob in izip(ranks, probabilities_rank):
+    print "rank: %d, probability: %f, odds: %f" % (rank, prob, prob / (1 - prob))
+  ```
 
 # multi_armed_bandit - Multi-armed Bandit Problem
 
@@ -435,30 +547,87 @@ The following is a short review of the distributions.
     - grid search
     - feature importances
 
+# K Nearest Neighbors (knn):
+  - Be able to describe the KNN algorithm:
+    - Answer:
+      - KNN is a non-parametric approach for classification problems. It starts with storing all data points. Before prediction, we need to define a metric for distance. Distance metrics include Euclidean distance, Manhattan distance, cosine distance, etc. For each data point, we calculate the desired distance between this point and all the rest data from our set. We predict the label of this data point by taking the majority votes on the k-nearest points. We do this for all data points in our set. Typical k can be 5 or 10.
+      - The weights of each vote can be scaled by the inverse of the pair distance, thus signing higher votes to the points that are nearer.
+      - For regression problems, instead of votes, we apply mean of continuous target.
+
+  - Describe the curse of dimensionality:
+    - Answer:
+      - The curse of dimensionality describes the sparsity in available data, when dimensionality increases drastically.
+  - Recognize the conditions under which the curse may be problematic:
+    - Answer:
+      - In order to obtain a statistically sound and reliable result, the amount of data needed to support the result often grows exponentially with the dimensionality.
+      - Organizing and searching data often relies on detecting areas where objects form groups with similar properties; in high dimensional data, however, all objects appear to be sparse and dissimilar in many ways, which prevents common data organization strategies from being efficient.
+  - Enumerate strengths and weaknesses of KNN:
+    - Advantage:
+      1. Robust to noisy training data (especially if we use inverse square of weighted distance as the “distance”).  
+      2. Effective if the training data is large.
+    - Disadvantage:
+      1. Need to determine value of parameter K (number of nearest neighbors).
+      2. Distance based learning is not clear which type of distance to use and which attribute to use to produce the best results.
+      3. Computation cost is quite high because we need to compute distance of each query instance to all training samples.
+
+  - Room for improvement:
+    - KD tree for faster generalized N-point problems.
+      http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KDTree.html#sklearn.neighbors.KDTree
+    - `class sklearn.neighbors.KNeighborsClassifier`:
+      - algorithm : {‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}, optional
+      - leaf_size : int, optional (default = 30) Leaf size passed to BallTree or KDTree. This can affect the speed of the construction and query, as well as the memory required to store the tree. The optimal value depends on the nature of the problem.
+
+# web_scraping.py:
+- Define the MongoDB database and table
+- Query the NYT API once
+- Determine if the results are more than 100 pages
+- Looping through the pages give the number of pages
+- Scrape the meta data (link to article and put it into Mongo)
+- Get all the links, visit the page and scrape the content
+
+
+# ebay_scraping.py:
+- helper function for getting class information out of the soup for a page
+- get the source link for all images in a soup results object
+- update image paths with a new prefix this is a function I use to make the code runnable from a remote directory
+- Helper function to get soup from a live url, as opposed to a local copy
+- downloads and opens an image from a url
+- save images to specified directory (save_dir), if the directory does not exist yet it is created
+- get the images from the soup of an ebay page, then save them locally
+
 
 
 
 
 # Summary of Progress:
 - [x] completed:
-  1. ab_testing
-  2. bayesian
-  3. cv_regularization
-  4. linear_algebra_eda
-  5. linear_regression
-  6. logistic
-  7. multi_armed_bandit
-  8. pandas_1
-  9. pandas_2
-  10. plotting
-  11. power_analysis
-  12. probability
-  13. sampling_estimation
-  14. decision_trees
-  15. random_forest
-  16. Boosting
+  1. sklearn Workflow
+  2. KFold
+  3. ab_testing
+  4. bayesian
+  5. cv_regularization
+  6. linear_algebra_eda
+  7. linear_regression
+  8. logistic
+  9. multi_armed_bandit
+  10. pandas_1
+  11. pandas_2
+  12. plotting
+  13. power_analysis
+  14. probability
+  15. sampling_estimation
+  16. decision_trees
+  17. random_forest
+  18. Boosting
+  19. knn
+  20. gradient descent
+  21. web scraping
+
 
 - [ ] uncompleted:
-  1. knn
-  2. gradient descent
-  3. nlp
+  1. gradient descent (to do)
+  2. nlp
+  3. web scraping
+  4. cost-benefit matrix
+  5. naive Bayes
+  6. Clustering
