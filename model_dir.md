@@ -678,3 +678,11 @@ The following is a short review of the distributions.
   4. cost-benefit matrix
   5. naive Bayes
   6. Clustering
+  7. dimensionality reduction
+  8. Non-negative matrix factorization
+  9. Recommender system
+  10. Parallelization
+  11. Map reduce
+  12. Graph theory
+  13. Spark SQL
+  14. Spark ML
