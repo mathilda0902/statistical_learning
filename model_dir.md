@@ -488,6 +488,14 @@ The following is a short review of the distributions.
 2. Decision trees regressor
 3. knn
 4. Recursion practice
+5. notes on sklearn and its practical use:
+  - Remember that the number of samples required to populate the tree doubles for each additional level the tree grows to. Use max_depth to control the size of the tree to prevent overfitting.
+  - Use `min_samples_split` or `min_samples_leaf` to control the number of samples at a leaf node. A very small number will usually mean the tree will overfit, whereas a large number will prevent the tree from learning the data. Try `min_samples_leaf=5` as an initial value. If the sample size varies greatly, a float number can be used as percentage in these two parameters. The main difference between the two is that `min_samples_leaf` guarantees a minimum number of samples in a leaf, while `min_samples_split` can create arbitrary small leaves, though `min_samples_split` is more common in the literature.
+  - Balance your dataset before training to prevent the tree from being biased toward the classes that are dominant. Class balancing can be done by sampling an equal number of samples from each class, or preferably by normalizing the sum of the sample weights (`sample_weight`) for each class to the same value. Also note that weight-based pre-pruning criteria, such as `min_weight_fraction_leaf`, will then be less biased toward dominant classes than criteria that are not aware of the sample weights, like `min_samples_leaf`.
+  - If the samples are weighted, it will be easier to optimize the tree structure using weight-based pre-pruning criterion such as `min_weight_fraction_leaf`, which ensure that leaf nodes contain at least a fraction of the overall sum of the sample weights.
+  - All decision trees use `np.float32` arrays internally. If training data is not in this format, a copy of the dataset will be made.
+  - If the input matrix X is very sparse, it is recommended to convert to sparse `csc_matrix` before calling fit and sparse `csr_matrix` before calling predict. Training time can be orders of magnitude faster for a sparse matrix input compared to a dense matrix when features have zero values in most of the samples.
+  - More on pre-/post-pruning: https://blog.nelsonliu.me/2016/08/05/gsoc-week-10-scikit-learn-pr-6954-adding-pre-pruning-to-decisiontrees/
 
 
 # random_forest - Random forest
@@ -501,13 +509,30 @@ The following is a short review of the distributions.
 2. sklearn_rf.py:
   - fitting random forest using default keywords.
   - get: accuracy score, confusion matrix, precision score, recall score.
-  - change `oob` to True. compare out-of-bag training accuracy score to test set.
+  - change `oob` to True (`oob_score=True`). compare out-of-bag training accuracy score to test set.
   - feature importances
   - Calculate the standard deviation for feature importances across all trees
   - number of trees and accuracy score
   - max features parameter and accuracy score
   - function `get_score(classifier, X_train, X_test, y_train, y_test, **kwargs)`:
     - return model.score(X_test, y_test), precision_score(y_test, y_predict), recall_score(y_test, y_predict)
+  - `n_estimators`: number of trees. `max_features`: the size of the random subsets of features to consider when splitting a node.
+
+3. Confusion matrix:
+  - `confusion_matrix(y_test, y_predict)`:
+      ```
+      answer:  716   6
+                40  72
+      ```
+  - What is the precision? Recall?
+    - precision: 0.923076923077
+    - recall: 0.642857142857
+  - `tn, fp, fn, tp = confusion_matrix([0, 1, 0, 1], [1, 1, 1, 0]).ravel()`
+  - Thus in binary classification, the count of true negatives is `C_{0,0}`, false negatives is `C_{1,0}`, true positives is `C_{1,1}` and false positives is `C_{0,1}`.
+
+4. Relation between precision and recall:
+  - Note that the precision may not decrease with recall. The definition of precision `(\frac{T_p}{T_p + F_p})` shows that lowering the threshold of a classifier may increase the denominator, by increasing the number of results returned. If the threshold was previously set too high, the new results may all be true positives, which will increase precision. If the previous threshold was about right or too low, further lowering the threshold will introduce false positives, decreasing precision.
+  - Recall is defined as `\frac{T_p}{T_p+F_n}`, where `T_p+F_n` does not depend on the classifier threshold. This means that lowering the classifier threshold may increase recall, by increasing the number of true positive results. It is also possible that lowering the threshold may leave recall unchanged, while the precision fluctuates.
 
 
 # boosting - Boosting regressor
