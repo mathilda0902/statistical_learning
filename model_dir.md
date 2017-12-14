@@ -532,7 +532,7 @@ The following is a short review of the distributions.
 
 4. Relation between precision and recall:
   - Note that the precision may not decrease with recall. The definition of precision `(\frac{T_p}{T_p + F_p})` shows that lowering the threshold of a classifier may increase the denominator, by increasing the number of results returned. If the threshold was previously set too high, the new results may all be true positives, which will increase precision. If the previous threshold was about right or too low, further lowering the threshold will introduce false positives, decreasing precision.
-  - Recall is defined as `\frac{T_p}{T_p+F_n}`, where `T_p+F_n` does not depend on the classifier threshold. This means that lowering the classifier threshold may increase recall, by increasing the number of true positive results. It is also possible that lowering the threshold may leave recall unchanged, while the precision fluctuates.
+  - Recall is defined as `$\frac{T_p}{T_p+F_n}$`, where `T_p+F_n` does not depend on the classifier threshold. This means that lowering the classifier threshold may increase recall, by increasing the number of true positive results. It is also possible that lowering the threshold may leave recall unchanged, while the precision fluctuates.
 
 
 # boosting - Boosting regressor
