@@ -532,7 +532,7 @@ The following is a short review of the distributions.
 
 4. Relation between precision and recall:
   - Note that the precision may not decrease with recall. The definition of precision `(\frac{T_p}{T_p + F_p})` shows that lowering the threshold of a classifier may increase the denominator, by increasing the number of results returned. If the threshold was previously set too high, the new results may all be true positives, which will increase precision. If the previous threshold was about right or too low, further lowering the threshold will introduce false positives, decreasing precision.
-  - Recall is defined as `$\frac{T_p}{T_p+F_n}$`, where `T_p+F_n` does not depend on the classifier threshold. This means that lowering the classifier threshold may increase recall, by increasing the number of true positive results. It is also possible that lowering the threshold may leave recall unchanged, while the precision fluctuates.
+  - Recall is defined as `\frac{T_p}{T_p+F_n}`, where `T_p+F_n` does not depend on the classifier threshold. This means that lowering the classifier threshold may increase recall, by increasing the number of true positive results. It is also possible that lowering the threshold may leave recall unchanged, while the precision fluctuates.
 
 
 # boosting - Boosting regressor
@@ -566,6 +566,28 @@ The following is a short review of the distributions.
                       y_test: 1d numpy array
         - Returns: A plot of the number of iterations vs the MSE for the model for both the training set and test set.
     - Grid search
+      ```
+      def do_grid_search():
+
+      # Split it up into our training and testing sets
+      X_train, X_test, y_train, y_test = train_test_split(X,y)
+
+      # Initalize our model here
+      est = GradientBoostingClassifier()
+
+      # Here are the params we are tuning, ie,
+      # if you look in the docs, all of these are 'nobs' within the GradientBoostingClassifier algo.
+      param_grid = {'learning_rate': [0.1, 0.05, 0.02],
+                  'max_depth': [2, 3],
+                  'min_samples_leaf': [3, 5],
+                  }
+
+      # Plug in our model, params dict, and the number of jobs, then .fit()
+      gs_cv = GridSearchCV(est, param_grid, n_jobs=2).fit(X_train, y_train)
+
+      # return the best score and the best params
+      return gs_cv.best_score_, gs_cv.best_params_
+      ```
 
 3. adaboost.py:
     - staged misclassification rate
