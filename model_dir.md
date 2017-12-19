@@ -546,7 +546,21 @@ The following is a short review of the distributions.
 2. Decision trees regressor
 3. knn
 4. Recursion practice
-5. notes on sklearn and its practical use:
+5. http://dataaspirant.com/2017/01/30/how-decision-tree-algorithm-works/
+6. https://www.analyticsvidhya.com/blog/2016/04/complete-tutorial-tree-based-modeling-scratch-in-python/
+
+7. Decision trees pros and cons:
+  - Regular (not bagged or boosted)
+    - Pros:
+      - easy to interpret visually when the trees only contain several levels
+      - Can easily handle qualitative (categorical) features
+      - Works well with decision boundaries parellel to the feature axis
+    - Cons:
+      - prone to overfitting
+      - possible issues with diagonal decision boundaries
+
+
+9. notes on sklearn and its practical use:
   - Remember that the number of samples required to populate the tree doubles for each additional level the tree grows to. Use max_depth to control the size of the tree to prevent overfitting.
   - Use `min_samples_split` or `min_samples_leaf` to control the number of samples at a leaf node. A very small number will usually mean the tree will overfit, whereas a large number will prevent the tree from learning the data. Try `min_samples_leaf=5` as an initial value. If the sample size varies greatly, a float number can be used as percentage in these two parameters. The main difference between the two is that `min_samples_leaf` guarantees a minimum number of samples in a leaf, while `min_samples_split` can create arbitrary small leaves, though `min_samples_split` is more common in the literature.
   - Balance your dataset before training to prevent the tree from being biased toward the classes that are dominant. Class balancing can be done by sampling an equal number of samples from each class, or preferably by normalizing the sum of the sample weights (`sample_weight`) for each class to the same value. Also note that weight-based pre-pruning criteria, such as `min_weight_fraction_leaf`, will then be less biased toward dominant classes than criteria that are not aware of the sample weights, like `min_samples_leaf`.
@@ -653,6 +667,7 @@ The following is a short review of the distributions.
     - feature importances
 
 # K Nearest Neighbors (knn):
+source: https://medium.com/@adi.bronshtein/a-quick-introduction-to-k-nearest-neighbors-algorithm-62214cea29c7
   - Be able to describe the KNN algorithm:
     - Answer:
       - KNN is a non-parametric approach for classification problems. It starts with storing all data points. Before prediction, we need to define a metric for distance. Distance metrics include Euclidean distance, Manhattan distance, cosine distance, etc. For each data point, we calculate the desired distance between this point and all the rest data from our set. We predict the label of this data point by taking the majority votes on the k-nearest points. We do this for all data points in our set. Typical k can be 5 or 10.
@@ -669,11 +684,14 @@ The following is a short review of the distributions.
   - Enumerate strengths and weaknesses of KNN:
     - Advantage:
       1. Robust to noisy training data (especially if we use inverse square of weighted distance as the “distance”).  
-      2. Effective if the training data is large.
+      2. Can do well in practice with enough representative data.
+      3. Flexible to feature / distance choices.
+      4. Naturally handles multi-class cases.
     - Disadvantage:
       1. Need to determine value of parameter K (number of nearest neighbors).
       2. Distance based learning is not clear which type of distance to use and which attribute to use to produce the best results.
-      3. Computation cost is quite high because we need to compute distance of each query instance to all training samples.
+      3. Computation cost is quite high because we need to compute distance of each query instance to all training samples. Large search problem to find nearest neighbours.
+
 
   - Room for improvement:
     - KD tree for faster generalized N-point problems.
@@ -767,8 +785,90 @@ with scraping. Feel free to skip it if you are already comfortable with scraping
 - save images to specified directory (save_dir), if the directory does not exist yet it is created
 - get the images from the soup of an ebay page, then save them locally
 
+# Gradient Descent:
+- GD example code for linear regression:
+  - /Users/Victoria/galvanize/0_statistical_learning/gradient_descent/src
+  - source: https://spin.atomicobject.com/2014/06/24/gradient-descent-linear-regression/
+
+- Use cases for gradient descent:
+  - Goal of gradient descent: to update a set of parameters in an iterative manner to minimize some cost/loss function.
+  - Efficiency: if we consider linear regression, the explicit solution requires inverting a matrix which has complexity O(N3). This becomes prohibitive in the context of big data.
+  - Convexity: a lot of problems in machine learning are convex, so using gradients ensure that we will get to the extrema. This is because for a convex function, gradient descent will always eventual converge given a small enough step size and infinite time.
+  - Data streams: when data comes in as a continuous stream of items, without possibility to buffer all the samples, the closed form solution is not applicable.
+  - Concept drift: when statistical properties of the data evolve over time, iterative training allows for smooth adaptation to new characteristics without completely forgetting the old ones.
+  - Generalization: iterative method gives approximate solution and this is a feature, not a bug, because this makes the algorithm more robust against outliers and improves accuracy on new unseen examples.
+
+- Compare and contrast gradient descent and stochastic gradient descent:
+  - While in GD, you have to run through all the samples in your training set to do a single update for a parameter in a particular iteration, in SGD, on the other hand, you use ONLY ONE or SUBSET of training sample from your training set to do the update for a parameter in a particular iteration. If you use SUBSET, it is called Minibatch Stochastic gradient Descent.
+  - SGD often converges much faster compared to GD but the error function is not as well minimized as in the case of GD. Often in most cases, the close approximation that you get in SGD for the parameter values are enough because they reach the optimal values and keep oscillating there.
+  - Pseudocode and python code: https://www.pyimagesearch.com/2016/10/17/stochastic-gradient-descent-sgd-with-python/
 
 
+# Classification Model Pros and Cons (Generalized)
+
+  * Logistic Regression
+  	* Pros
+  		* low variance
+  		* provides probabilities for outcomes
+  		* works well with diagonal (feature) decision boundaries
+  		* NOTE: logistic regression can also be used with kernel methods
+  	* Cons
+  		* high bias
+  * Decision Trees
+  	* Regular (not bagged or boosted)
+  		* Pros
+  			* easy to interpret visually when the trees only
+  				contain several levels
+  			* Can easily handle qualitative (categorical) features
+  			* Works well with decision boundaries parellel to the feature axis
+  		* Cons
+  			* prone to overfitting
+  			* possible issues with diagonal decision boundaries
+  	* Bagged Trees : train multiple trees using bootstrapped data
+  		to reduce variance and prevent overfitting
+  		* Pros
+  			* reduces variance in comparison to regular decision trees
+  			* Can provide variable importance measures
+  				* classification: Gini index
+  				* regression: RSS
+  			* Can easily handle qualitative (categorical) features
+  			* Out of bag (OOB) estimates can be used for model validation
+  		* Cons
+  			* Not as easy to visually interpret
+  			* Does not reduce variance if the features are correlated
+  	* Boosted Trees : Similar to bagging, but learns sequentially and builds off
+  		previous trees
+  		* Pros
+  			* Somewhat more interpretable than boosted trees/random forest
+  				as the user can define the size of each tree resulting in
+  				a collection of stumps (1 level) which can be viewed as an additive model
+  			* Can easily handle qualitative (categorical) features
+  		* Cons
+  			* Unlike boosting and random forests, can overfit if number of trees is too large
+  * Random Forest
+  	* Pros
+  		* Decorrelates trees (relative to boosted trees)
+  			* important when dealing with mulitple features which may be correlated
+  		* reduced variance (relative to regular trees)
+  	* Cons
+  		* Not as easy to visually interpret
+  * SVM
+  	* Pros
+  		* Performs similarly to logistic regression when linear separation
+  		* Performs well with non-linear boundary depending on the kernel used
+  		* Handle high dimensional data well
+  	* Cons
+  		* Susceptible to overfitting/training issues depending on kernel
+  * Neural Network (This section needs further information based on
+  	different types of NN's)
+  * Naive Bayes
+  	* Pros
+  		* Computationally fast
+  		* Simple to implement
+  		* Works well with high dimensions
+  	* Cons
+  		* Relies on independence assumption and will perform
+  			badly if this assumption is not met
 
 
 # Summary of Progress:
@@ -797,17 +897,10 @@ with scraping. Feel free to skip it if you are already comfortable with scraping
 
 
 - [ ] uncompleted:
-  1. gradient descent (to do)
-  2. nlp
-  3. web scraping
-  4. cost-benefit matrix
-  5. naive Bayes
-  6. Clustering
-  7. dimensionality reduction
-  8. Non-negative matrix factorization
-  9. Recommender system
-  10. Parallelization
-  11. Map reduce
-  12. Graph theory
-  13. Spark SQL
-  14. Spark ML
+  1. nlp
+  2. cost-benefit matrix
+  3. naive Bayes
+  4. Clustering
+  5. dimensionality reduction
+  6. Non-negative matrix factorization
+  7. Recommender system
