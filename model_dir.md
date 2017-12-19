@@ -122,6 +122,19 @@ print "average score:", np.mean(results)
     2. normalize
     3. print distribution
     4. plot
+- Difference between Bayesian and Frequentist inference:
+  - Frequentist: Sampling is infinite and decision rules can be sharp. Data are a repeatable random sample - there is a frequency. Underlying parameters are fixed i.e. they remain constant during this repeatable sampling process.
+  - Bayesian: Unknown quantities are treated probabilistically and the state of the world can always be updated. Data are observed from the realized sample. Parameters are unknown and described probabilistically. It is the data which are fixed.
+
+- Difference between a frequentist A/B test and a Bayesian A/B test:
+  - https://conversionxl.com/blog/bayesian-frequentist-ab-testing/
+  - Basically, using a Frequentist method means making predictions on underlying truths of the experiment using only data from the current experiment.
+  - So, the biggest distinction is that Bayesian probability specifies that there is some prior probability. The Bayesian approach goes something like this (summarized from this discussion):
+    - Define the prior distribution that incorporates your subjective beliefs about a parameter. The prior can be uninformative or informative.
+    - Gather data.
+    - Update your prior distribution with the data using Bayes’ theorem (though you can have Bayesian methods without explicit use of Bayes’ rule to obtain a posterior distribution. The posterior distribution is a probability distribution that represents your updated beliefs about the parameter after having seen the data.
+    - Analyze the posterior distribution and summarize it (mean, median, sd, quantiles,…).
+
 
 # Bias and Variances
 - If you get low training error and high testing error, what do you think is happening and what can you do about it?
@@ -188,6 +201,17 @@ test_predicted = linear.predict(X_test)
 
 
 # cv_regularization - Regularization: Ridge (Shrinkage) and Lasso
+- compare and contrast Ridge and Lasso:
+- Ridge:
+  - The assumptions of Ridge regression is same as least squared regression except normality is not to be assumed
+  - It shrinks the value of coefficients but doesn’t reaches zero, which suggests no feature selection feature
+  - This is a regularization method and uses l2 regularization.
+- Lasso:
+  - The assumptions of this regression is same as least squared regression except normality is not to be assumed
+  - It shrinks coefficients to zero (exactly zero), which certainly helps in feature selection
+  - This is a regularization method and uses l1 regularization
+  - If group of predictors are highly correlated, lasso picks only one of them and shrinks the others to zero
+
 ## Functions:
 
 1. `mse_ridge` and `mse_lasso`: mean squared error of Ridge / Lasso Regression
@@ -256,6 +280,12 @@ sm.qqplot(res, scs.norm, line='45', fit=True)
 6. Fit model again.
 
 # logistic - ROC (Receiver Operating Characteristic) curve
+- Logistic in taxonomy of Machine Learning algorithms:
+  - Although it confusingly includes 'regression' in the name, logistic regression is actually a powerful tool for two-class and multiclass classification. It's fast and simple. The fact that it uses an 'S'-shaped curve instead of a straight line makes it a natural fit for dividing data into groups. Logistic regression gives linear class boundaries, so when you use it, make sure a linear approximation is something you can live with.
+- Difference between linear regression and logistic regression:
+  - Linear Regression is used to establish a relationship between Dependent and Independent variables, which is useful in estimating the resultant dependent variable in case independent variable change.
+  - Logistic Regression on the other hand is used to ascertain the probability of an event. And this event is captured in binary format, i.e. 0 or 1.
+
 
 1. ROC curve function `roc_curve`:
 
@@ -300,15 +330,15 @@ fpred= model5.predict_proba(fm)
 4. Output in format:
 
 ```
-output = np.vstack((fm['rank'], p_vec, odds)).T
+output = np.vstack((fm['rank'], p_vec, )).T
 for a in output:
-    print 'rank: {}, probability: {}, odds: {}'. format(int(a[0]), round(a[1], 6), round(a[2], 6))
+    print 'rank: {}, probability: {}, : {}'. format(int(a[0]), round(a[1], 6), round(a[2], 6))
 ```
     Display:
-        rank: 1, probability: 0.518633, odds: 1.077417
-        rank: 2, probability: 0.370328, odds: 0.588129
-        rank: 3, probability: 0.243022, odds: 0.321042
-        rank: 4, probability: 0.149115, odds: 0.175247
+        rank: 1, probability: 0.518633, : 1.077417
+        rank: 2, probability: 0.370328, : 0.588129
+        rank: 3, probability: 0.243022, : 0.321042
+        rank: 4, probability: 0.149115, : 0.175247
 
 5. Metrics scores:
 
@@ -319,24 +349,39 @@ metrics.precision_score(y_test, y_pred)
 ```
 
 6. Beta coefficient interpretation:
-  - Increasing the `GRE score` by `1 point` increases the chance of getting in `by a factor` of `1.00189`.
+  - Increasing the `GRE score` by `1 point` increases the chance of getting in `by a factor` of `1.00189`, or an increase of 0.189%.
+  -  for a one-unit increase in the `continuous variable`, the expected change in log  is log (p/(1-p))
   - What change is required to double my chances of admission?
-  - `log(2) / coef`: Increasing the GRE score by 367 points doubles the chance of getting in.
+    - `log(2) / coef`: Increasing the GRE score by 367 points doubles the chance of getting in.
+  - more: https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-how-do-i-interpret--ratios-in-logistic-regression/
 
-7. Compute the odds (p/(1-p)):
+7. Compute the  (p/(1-p)):
   ```
   probabilities_rank = model.predict_proba(X_rank)[:, 1]
   for rank, prob in izip(ranks, probabilities_rank):
-    print "rank: %d, probability: %f, odds: %f" % (rank, prob, prob / (1 - prob))
+    print "rank: %d, probability: %f, : %f" % (rank, prob, prob / (1 - prob))
   ```
+  - note: logit = log of  = log (p / (1-p))
 
 # multi_armed_bandit - Multi-armed Bandit Problem
+- The multi-armed bandits in particular focus on the question of exploration vs. exploitation trade-off - how many resources should be spent in trial and error vs. maximizing the benefit.
+- We can calculate the expected clicks (rewards) from each strategy and see how many fewer clicks we got using the epsilon-greedy vs. the epsilon-first (A/B testing). These differences are known as "regrets".
 
-## Bayesian A/B testing:
+## Bayesian A/B testing: (/Users/Victoria/galvanize/week2/dsi-power-bayesian/bayesian_ab_testing.pdf)
 While A/B testing with frequentist and Bayesian methods can be incredibly useful for determining the effectiveness of various changes to your products, better algorithms exist for making educated decision on-the-fly. Two such algorithms that typically out-perform A/B tests are extensions of the Multi-armed bandit problem which uses an epsilon-greedy strategy. Using a combination of exploration and exploitation, this strategy updates the model with each successive test, leading to higher overall click-through rate. An improvement on this algorithm uses an epsilon-first strategy called UCB1. Both can be used in lieu of traditional A/B testing to optimize products and click-through rates.
 
 1. Posterior after n views, updated by prior distributions beta
 2. simulating 10,000 points from site A's & B's beta distributions
+
+```
+from numpy.random import beta
+num samples = 10000
+alpha=beta=1
+site a simulation = beta(num conv a + alpha,
+num views a − num conv a + beta,
+size=num samples) site b simulation = beta(num conv b + alpha,
+num views b − num conv b + beta, size=num samples)
+```
 
 # pandas_1 - Pandas 1
 ## Objectives:
@@ -379,11 +424,24 @@ weather = np.loadtxt(filepath, delimiter=',', skiprows=1, usecols=cols)
 ```
 
 # power_analysis - Power Analysis
+- calculate sample size for power and significant level:
+`dsi-warm-ups/answer/frequentist_ab_testing.py`
+- ways to increase power:
+  - Increase alpha
+  - Conduct a one-tailed test
+  - Increase the effect size
+  - Decrease random error
+  - Increase sample size
+  - https://www.theanalysisfactor.com/5-ways-to-increase-power-in-a-study/
+  - lecture notes: /Users/Victoria/galvanize/week2/dsi-power-bayesian/power_lecture.pdf
+
+- Bonferroni: dsi-warm-ups/ab_testing.py
+
 
 ## Functions:
 ### One sample:
 - CI for mean
-- Power for alternative hyppothesis
+- Power for alternative hypothesis
 - Power vs effect effect size
 
 ### Two sample pooled:
