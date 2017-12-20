@@ -1,6 +1,6 @@
-# General Workflow for working with sklearn: $p \\sim \\frac{\\#successes}{\\#trials}$
+# General Workflow for working with sklearn: [$p \\sim \\frac{\\#successes}{\\#trials}$]
 ```
-$p \\sim \\frac{\\#successes}{\\#trials}$
+[$p \\sim \\frac{\\#successes}{\\#trials}$]
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
