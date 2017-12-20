@@ -596,9 +596,8 @@ The following is a short review of the distributions.
 - Calculate the confidence interval (C.I.) of chosen sample statistic using bootstrap sampling.
 - Pearson correlation matrix.
 - Bootstrap confidence interval:
-```
 https://machinelearningmastery.com/calculate-bootstrap-confidence-intervals-machine-learning-results-python/
-```
+
 
 # sampling_estimation - Parametric Estimates
 ## Functions:
