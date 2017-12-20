@@ -148,7 +148,7 @@ print "average score:", np.mean(results)
 - In k-fold cross-validation, the original sample is randomly partitioned into k equal sized subsamples. Of the k subsamples, a single subsample is retained as the validation data for testing the model, and the remaining k − 1 subsamples are used as training data. The cross-validation process is then repeated k times (the folds), with each of the k subsamples used exactly once as the validation data. The k results from the folds can then be averaged to produce a single estimation. The advantage of this method over repeated random sub-sampling is that all observations are used for both training and validation, and each observation is used for validation exactly once. 10-fold cross-validation is commonly used, but in general k remains an unfixed parameter.
 
 # Cross Validation
-    ```
+```
     from sklearn.model_selection import KFold # import KFold
     X = np.array([[1, 2], [3, 4], [1, 2], [3, 4]]) # create an array
     y = np.array([1, 2, 3, 4]) # Create another array
@@ -156,18 +156,18 @@ print "average score:", np.mean(results)
     kf.get_n_splits(X) # returns the number of splitting iterations in the cross-validator
     print(kf)
     KFold(n_splits=2, random_state=None, shuffle=False)
-    ```
-    The resulted folds:
-    ```
+```
+The resulted folds:
+```
     for train_index, test_index in kf.split(X):
      print(“TRAIN:”, train_index, “TEST:”, test_index)
      X_train, X_test = X[train_index], X[test_index]
      y_train, y_test = y[train_index], y[test_index]
     ('TRAIN:', array([2, 3]), 'TEST:', array([0, 1]))
     ('TRAIN:', array([0, 1]), 'TEST:', array([2, 3]))
-    ```
-
-    ```
+```
+LeaveOneOut:
+```
     from sklearn.model_selection import LeaveOneOut
     X = np.array([[1, 2], [3, 4]])
     y = np.array([1, 2])
@@ -179,7 +179,7 @@ print "average score:", np.mean(results)
        X_train, X_test = X[train_index], X[test_index]
        y_train, y_test = y[train_index], y[test_index]
        print(X_train, X_test, y_train, y_test)
-    ```
+```
 Source: https://towardsdatascience.com/train-test-split-and-cross-validation-in-python-80b61beca4b6
 
 - explain train/test splits:
