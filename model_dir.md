@@ -1,4 +1,8 @@
-# General Workflow for working with sklearn: \(p \\sim \\frac{\\#successes}{\\#trials}\)
+# General Workflow for working with sklearn:
+\being{math}
+p \\sim \\frac{\\#successes}{\\#trials}
+\end{math}
+
 ```
 [$p \\sim \\frac{\\#successes}{\\#trials}$]
 import pandas as pd
