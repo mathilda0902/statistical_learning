@@ -1,5 +1,6 @@
-# General Workflow for working with sklearn:
+# General Workflow for working with sklearn: $p \\sim \\frac{\\#successes}{\\#trials}$
 ```
+$p \\sim \\frac{\\#successes}{\\#trials}$
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
@@ -251,7 +252,24 @@ test_predicted = linear.predict(X_test)
 3. Plot group means. Mark the mean and mean +/- 1.5 * Standard Deviation as horizontal lines on the plot.
 4. Plot distributions using histograms. With kde.
 5. Boxplots for sub-groups.
+6. Find missing data:
+  ```
+  df.apply(lambda x: np.sum(pd.isnull(x)))
+  ```
+eg.: So, ~16% of avg_rating_of_driver is missing, which means we probably should not drop this data. Would be nice to just do a simple t-test to see if distribution of features is different for rows with/without missing values. Here is a helper function:
 
+  ```
+  def ttest_by(vals, by):
+    '''Compute a t-test on a column based on an indicator for which sample the values are in.'''
+    vals1 = vals[by]
+    vals2 = vals[-by]
+
+    return sp.stats.ttest_ind(vals1, vals2)
+  ```
+  ```
+  ttest_by(df.avg_dist, pd.isnull(df.avg_rating_of_driver))
+  ```
+  -  We have a couple options for handling missing data: drop the rows if there are only a few or they are missing at random, impute the missing values, or bin the feature by quantiles (typically deciles) + a bin for missing.
 
 # linear_algebra_eda - Linear Algebra
 
