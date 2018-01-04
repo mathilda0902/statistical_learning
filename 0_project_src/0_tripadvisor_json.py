@@ -4,13 +4,11 @@ import json
 from bs4 import BeautifulSoup
 import re
 
-'''read tripadvisor_json: 12774 hotels'''
 
 '''codes for reading one .json, create one dataframe with user-item info'''
 data = json.load(open('dataset/tripadvisor_json/258990.json'))
 data.keys()
 '''[u'Reviews', u'HotelInfo']'''
-
 
 '''function read json into user-item matrix'''
 def read_json(file):
@@ -101,13 +99,7 @@ file_comp.to_csv('hotel_ratings.csv', encoding='utf-8', index=False)
 '''reading to pandas'''
 hotel_ratings = pd.read_csv('dataset/tripadvisor_json/hotel_ratings.csv')
 
-'''    hotel_mat = pd.DataFrame({'hotel name': [0],
-                                'hotel id': [0],
-                                'city': [0],
-                                'state': [0],
-                                'price low': [0],
-                                'price high': [0]
-                                })'''
+
 
 '''function to extract hotel info:'''
 def read_hotel(file):
@@ -156,46 +148,15 @@ def read_hotel(file):
 '''testing read_hotel function with sample data:'''
 file_comp2 = read_hotel('dataset/tripadvisor_json/sample/manifest2.json')
 
+'''read entire hotel info:'''
+file_compiled = read_hotel('dataset/tripadvisor_json/manifest.json')
 
-'''testing read_hotel function:'''
-hotel1 = json.load(open('dataset/tripadvisor_json/258990.json'))
-hotel2 = json.load(open('dataset/tripadvisor_json/230441.json'))
-hotel3 = json.load(open('dataset/tripadvisor_json/265897.json'))
-
-'''
-In [45]: hotel1['HotelInfo']['Address']
-Out[45]: u'<address><span rel="v:address"><span dir="ltr"><span class=
-"street-address" property="v:street-address">Via Aurelia 617-619</span>,
- <span class="locality"><span property="v:postal-code">00165</span>
- <span property="v:locality">Rome</span></span>, <span class="country-name"
-  property="v:country-name">Italy</span> </span></span></address>'
-
-Out[46]: u'<address><span rel="v:address"><span dir="ltr"><span class=
-"street-address" property="v:street-address">Sonnenallee 6</span>,
-<span class="locality"><span property="v:postal-code">12047</span>
-<span property="v:locality">Berlin</span></span>, <span class=
-"country-name" property="v:country-name">Germany</span> </span></span>
-</address>'
-'''
-
-soup = BeautifulSoup(hotel1['HotelInfo']['Address'], 'html.parser')
+'''saving as csv'''
+file_compiled.to_csv('hotel_info.csv', encoding='utf-8', index=False)
+'''reading to pandas'''
+hotel_info = pd.read_csv('dataset/tripadvisor_json/hotel_info.csv')
 
 
-def get_text(file):
-    data = json.load(open(file))
-    output = []
-    for hotel in data:
-        if 'Price' in hotel['HotelInfo'].keys():
-            output.append(hotel['HotelInfo']['Price'])
-    return output
-
-        soup = BeautifulSoup(hotel['HotelInfo']['Address'], 'html.parser')
-        text = soup.get_text()
-        output.append(text)
-    return output
-
-file_comp2 = get_text('dataset/tripadvisor_json/sample/manifest2.json')
-file_com = json.load(open('dataset/tripadvisor_json/sample/manifest2.json'))
 
 
 
