@@ -1,0 +1,12 @@
+1. You will need to know the location of your key pair you created when you launched your instance. Usually this will be in your "Downloads" folder, but you may want to move it elsewhere.
+
+You will need to know what your Public DNS is for your EC2 Instance.
+2.
+chmod 600 /Users/Victoria/scripts/ami/multi_cf.pem
+
+3.
+ssh -i /Users/Victoria/scripts/ami/multi_cf.pem ubuntu@ec2-**UNIQUE SET OF NUMBERS**.compute-1.amazonaws.com
+
+4.
+After the first login to the EC2, you do not need to repeat the chmod to change permissions for the key. Every time you start an previously-stopped EC2 instance, there will be a new Public DNS. To connect to the EC2 after the first login, copy and paste that new Public DNS into "UNIQUE SET OF NUMBERS", open terminal, and paste:
+ssh -i /Users/Victoria/scripts/ami/multi_cf.pem ubuntu@ec2-**UNIQUE SET OF NUMBERS**.compute-1.amazonaws.com
