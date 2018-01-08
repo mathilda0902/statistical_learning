@@ -1,25 +1,19 @@
+# correct dataset contains dimensions (1362204, 15)
 import pandas as pd
 import numpy as np
+from datetime import datetime
+from scipy.sparse.linalg import svds
+from scipy import sparse
 
-rating_df = pd.read_csv('dataset/hotel_ratings.csv')
-#
+# working on the most popular 3000 hotels with unique 1072272 ratings,
+# rated by users with English login names,
+# for duplicate ratings, the most recent rating has been kept on record
+ratings = pd.read_csv('dataset/popular_3k_hotels.csv')
 
-rating_df = rating_df[['user', 'hotel id', 'ratings', 'review date']]
-rating_df.head()
-
-#Out[4]:
-#             user  hotel id  ratings        review date
-#0  strawberryshtc     99774      4.0     March 14, 2012
-#1    travelingTch     99774      5.0     March 11, 2012
-#2        Dorit147     99774      3.0      March 8, 2012
-#3        ashley r     99774      4.0  February 28, 2012
-#4    kacunningham     99774      4.0  February 27, 2012
-
-#R_df = rating_df.pivot(index='user', columns='hotel id', values='ratings').fillna(0)
-#ValueError: Index contains duplicate entries, cannot reshape
-# users might rated multiple times for the same hotel, choose the average rating
-
-rating = rating_df.groupby(['user', 'hotel id']).mean()
+ratings = ratings.groupby(['user', 'hotel id']).mean()
+#hotel_id = ratings['hotel id'].astype(int)
+ratings.drop(['Unnamed: 0', 'Unnamed: 0.1'], axis=1, inplace=True)
+#ratings = pd.concat([hotel_id, ratings], axis=1)
 
 # after taking average of duplicate ratings, we have a reduced matrix: rating
 #Out[22]:
@@ -55,9 +49,15 @@ rating.reset_index(inplace=True)
 #3                      !!!!!!?   2514403      4.0
 #4                      !!!!!!?   2514639      4.0
 
-R_df = rating.pivot(index='user', columns='hotel id', values='ratings').fillna(0)
+# for each user, keep the most recent rating for each hotel:
+idx = ratings.groupby(['user', 'hotel id'])['review date'].transform(max) == ratings['review date']
+new_ratings = ratings[idx]
+new_ratings.shape
 
-
+df = ratings[['user', 'hotel id', 'ratings']]
+#In [15]: df.shape
+#Out[15]: (1072270, 3)
+new_df = pd.pivot_table(df,index=['user'], columns = 'hotel id', values = "ratings").fillna(0)
 
 '''In this case, it might help to prune out the rare users and rare items and try
 again. Also, re-examine the data collection and data cleaning process to see
@@ -92,11 +92,10 @@ John D                                         58
 John W                                         57
 '''
 
-from scipy.sparse.linalg import svds
-from scipy import sparse
 
 
-df = rating[['user', 'hotel id', 'ratings']].sample(frac=0.05, replace=False)
+
+df = ratings[['user', 'hotel id', 'ratings']].sample(frac=0.05, replace=False)
 df = df.pivot(index='user',columns='hotel id', values='ratings').fillna(0)
 
 X = scipy.sparse.csc_matrix(df)
