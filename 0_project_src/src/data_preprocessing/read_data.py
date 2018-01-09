@@ -6,7 +6,7 @@ import re
 
 
 '''codes for reading one .json, create one dataframe with user-item info'''
-data = json.load(open('dataset/tripadvisor_json/258990.json'))
+data = json.load(open('dataset/tripadvisor_json/sample/72598.json'))
 data.keys()
 '''[u'Reviews', u'HotelInfo']'''
 
@@ -109,6 +109,7 @@ def read_hotel(file):
     hotel_id = []
     city = []
     state = []
+    zipcodes = []
     price_low = []
     price_high = []
     for hotel in data:
@@ -118,6 +119,8 @@ def read_hotel(file):
             output1 = re.split(',', text1)
             state_name = [e.strip() for e in output1][-1]
             city_name = output1[-2].lstrip()
+            span = soup1.find('span', {'property':'v:postal-code'})
+            zip_code = span.get_text()
         if 'Price' in hotel['HotelInfo'].keys():
             soup2 = BeautifulSoup(hotel['HotelInfo']['Price'], 'html.parser')
             text2 = soup2.get_text()
@@ -128,6 +131,8 @@ def read_hotel(file):
         hotel_id.append(hotel['HotelInfo'].get('HotelID', float('NaN')))
         city.append(city_name)
         state.append(state_name)
+        zipcodes.append(zip_code)
+
         try:
             ph = price_range[1]
         except IndexError:
@@ -139,10 +144,11 @@ def read_hotel(file):
     hotel_id = pd.DataFrame(hotel_id, columns=['hotel id'])
     city = pd.DataFrame(city, columns=['city'])
     state = pd.DataFrame(state, columns=['state'])
+    zipcode = pd.DataFrame(zipcodes, columns=['zip code'])
     price_low = pd.DataFrame(price_low, columns=['low price'])
     price_high = pd.DataFrame(price_high, columns=['high price'])
 
-    hotel_mat = pd.concat([name, hotel_id, city, state, price_low, price_high], axis=1)
+    hotel_mat = pd.concat([name, hotel_id, city, state, zipcode, price_low, price_high], axis=1)
     return hotel_mat
 
 '''testing read_hotel function with sample data:'''

@@ -7,7 +7,8 @@ from surprise import Reader
 from surprise import GridSearch
 
 ratings = pd.read_csv('dataset/popular_3k_hotels.csv')
-df = ratings[['user', 'hotel id', 'ratings']].sample(frac=0.05, replace=False)
+df = ratings[['user', 'hotel id', 'ratings', 'review date']]
+df = ratings[['user', 'hotel id', 'ratings', 'review date']].sample(frac=0.05, replace=False)
 # A reader is still needed but only the rating_scale param is requiered.
 reader = Reader(rating_scale=(1, 5))
 # The columns must correspond to user id, item id and ratings (in that order).
