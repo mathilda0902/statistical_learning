@@ -118,8 +118,13 @@ def read_hotel(file):
             text1 = soup1.get_text().strip()
             output1 = re.split(',', text1)
             state_name = [e.strip() for e in output1][-1]
-            city_name = output1[-2].lstrip()
-            zip_code = soup1.findAll('span', {'property':'v:postal-code'})[0].string
+            try:
+                city_name = output1[-2].lstrip()
+            except IndexError:
+                city_name = 'null'
+            span = soup1.find('span', {'property':'v:postal-code'})
+            if span is not None:
+                zip_code = span.get_text()
         if 'Price' in hotel['HotelInfo'].keys():
             soup2 = BeautifulSoup(hotel['HotelInfo']['Price'], 'html.parser')
             text2 = soup2.get_text()
