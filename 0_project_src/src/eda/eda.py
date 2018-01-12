@@ -158,6 +158,70 @@ pop_hotels.groupby('hotel id').mean()
 pop_hotels.to_csv('dataset/popular_3k_hotels.csv')
 
 
+# anonymous:
+'Posted by an Accorhotels.com traveler'
+new_df = df.ix[~(df['user'] == 'Posted by an Accorhotels.com traveler')]
+'Posted by a hotelsgrandparis.com traveler'
+new_df = new_df.ix[~(df['user'] == 'Posted by a hotelsgrandparis.com traveler')]
+'Posted by an Easytobook.com traveler'
+new_df = new_df.ix[~(df['user'] == 'Posted by an Easytobook.com traveler')]
+#David S              96
+#David B              90
+#David M              89
+#John C               85
+#John S               83
+#David H              78
+#John B               74
+#ITA_And_RE_a         69
+#John M               68
+count = new_df['user'].value_counts()
+dup_names = count.head(100000)
+dup_names = dup_names.reset_index()
+'''Out[82]:
+                      index  user
+0                   David S    96
+1                   David B    90
+2                   David M    89
+3                    John C    85
+4                    John S    83
+5                   David H    78
+6                    John B    74
+7              ITA_And_RE_a    69
+8                    John M    68
+9                Pawel_EPWR    65
+10                   John R    65
+11                   Paul B    64
+12                  David C    64
+13                  Chris B    63'''
+
+magic_barrier = new_df[new_df['user'].isin(dup_names['index'])]
+output = magic_barrier.groupby(['user', 'hotel id']).mean()
+
+
+reg = pd.read_csv('dataset/major_region_ratings.csv')
+hotel = pd.read_csv('dataset/hotel_info.csv')
+hotel_set = set(reg['hotel id'].tolist())
+pop_hotel = hotel.loc[hotel['hotel id'].isin(hotel_set)]
+# In [233]: pop_hotel.shape
+# Out[233]: (3000, 7)
+# selecting one location
+# pop_hotel = pd.read_csv('dataset/user_item_pop.csv', index=False)
+# user_item = reg.merge(pop_hotel, 'inner', on='hotel id')
+# user_item.drop(['Unnamed: 0', 'Unnamed: 0.1'], axis=1, inplace=True)
+# user_item.to_csv('dataset/user_item_pop.csv', index=False)
+#In [42]: user_item.shape
+#Out[42]: (532212, 24)
+user_item = pd.read_csv('dataset/user_item_pop.csv')
+pop_hotel_loc = set(pop_hotel['state'])
+msk = pop_hotel['state'].str.contains('Spain') == True
+pop_hotel[msk]
+
+
+
+
+
+
+
 
 
 

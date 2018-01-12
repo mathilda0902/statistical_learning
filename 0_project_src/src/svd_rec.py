@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 from scipy.sparse.linalg import svds
-from scipy import sparse
+from scipy.sparse import csc_matrix
 
 # working on the most popular 3000 hotels with unique 1072272 ratings,
 # rated by users with English login names,
