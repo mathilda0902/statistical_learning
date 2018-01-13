@@ -26,7 +26,7 @@ class knn_baseline(object):
 
 	def _userItemMatrix(df):
 		df = df[['user', 'hotel id', 'ratings']]
-		pdf = pd.pivot_table(df,index=['user'], columns = 'hotel id', values = "ratings").fillna(0)
+		pdf = pd.pivot_table(df, index=['user'], columns = 'hotel id', values = "ratings").fillna(0)
 		mat = csr_matrix(pdf)
 		return mat
 
