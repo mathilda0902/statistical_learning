@@ -7,6 +7,9 @@ from copy import deepcopy
 # https://rosettacode.org/wiki/K-d_tree#Python
 # for tfidf:
 # https://www.analyticsvidhya.com/blog/2017/11/information-retrieval-using-kdtree/
+# scikit ann
+# http://scikits.appspot.com/ann
+# http://www.cs.umd.edu/~mount/ANN/
 
 
 # ball tree: change distance is enough?
