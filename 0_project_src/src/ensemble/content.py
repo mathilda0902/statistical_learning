@@ -1,31 +1,51 @@
+import os
+from __future__ import print_function
+import codecs
+import pickle
+import json
+
 import numpy as np
 import pandas as pd
-import nltk
-import re
-import os
-import codecs
+
 from sklearn import feature_extraction
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.cluster import KMeans
+from sklearn.externals import joblib
+from sklearn.manifold import MDS
+
+from scipy.cluster.hierarchy import ward, dendrogram
+
+import nltk
+from nltk.stem.snowball import SnowballStemmer
+import re
 import mpld3
 
-ratings = pd.read_csv('dataset/hotel_encoded_ratings.csv')
+import matplotlib.pyplot as plt
+import matplotlib as mpl
 
-reviews = ratings.groupby('hotel id')['content'].apply(list)
-reviews = reviews.reset_index()
-hotel_names = reviews['hotel id'].tolist()
-hotel_reviews = reviews['content'].tolist()
+#filepath = 'dataset/hotel_name_reviews.csv'
+def read_reviews(filepath):
+    ratings = pd.read_csv(filepath)
+    reviews = ratings.groupby('hotel name')['content'].apply(list)
+    reviews = reviews.reset_index()
+    hotel_names = reviews['hotel name'].tolist()
+    all_reviews = reviews['content'].tolist()
+    hotel_reviews = []
+    for review in all_reviews:
+        hotel_reviews.append('.'.join(review))
 
-all_reviews = []
-for review in hotel_reviews:
-    all_reviews.append(reduce(lambda x, y: x+y, review))
+with open('dataset/hotel_names.txt', 'w') as outfile:
+    json.dump(hotel_names, outfile)
 
+with open('dataset/hotel_reviews.txt', 'w') as outfile:
+    json.dump(hotel_reviews, outfile)
 
 # load nltk's English stopwords as variable called 'stopwords'
 stopwords = nltk.corpus.stopwords.words('english')
-from nltk.stem.snowball import SnowballStemmer
 stemmer = SnowballStemmer("english")
 
-# here I define a tokenizer and stemmer which returns the set of stems in the text that it is passed
-
+# define a tokenizer and stemmer which returns the set of stems in the text that it is passed
 def tokenize_and_stem(text):
     # first tokenize by sentence, then by word to ensure that punctuation is caught as it's own token
     tokens = [word for sent in nltk.sent_tokenize(text) for word in nltk.word_tokenize(sent)]
@@ -49,23 +69,19 @@ def tokenize_only(text):
 
 totalvocab_stemmed = []
 totalvocab_tokenized = []
+for i in hotel_reviews:
+    allwords_stemmed = tokenize_and_stem(i)
+    totalvocab_stemmed.extend(allwords_stemmed)
+    allwords_tokenized = tokenize_only(i)
+    totalvocab_tokenized.extend(allwords_tokenized)
 
-for inc in range(200):
-    try:
-        for i in all_reviews[inc:inc+50]:
-            allwords_stemmed = tokenize_and_stem(i)
-            totalvocab_stemmed.extend(allwords_stemmed)
-            allwords_tokenized = tokenize_only(i)
-            totalvocab_tokenized.extend(allwords_tokenized)
-    except:
-        pass
 
 
 vocab_frame = pd.DataFrame({'words': totalvocab_tokenized}, index = totalvocab_stemmed)
 print 'there are ' + str(vocab_frame.shape[0]) + ' items in vocab_frame'
 # there are 6188088 items in vocab_frame
 
-from sklearn.feature_extraction.text import TfidfVectorizer
+
 #define vectorizer parameters
 tfidf_vectorizer = TfidfVectorizer(max_df=0.8, max_features=200000,
                                  min_df=0.2, stop_words='english',
@@ -78,37 +94,25 @@ print(tfidf_matrix.shape)
 #(100, 2934)
 
 terms = tfidf_vectorizer.get_feature_names()
-
-from sklearn.metrics.pairwise import cosine_similarity
 dist = 1 - cosine_similarity(tfidf_matrix)
 
 
 
-
 # k-means clustering
-from sklearn.cluster import KMeans
-
 num_clusters = 5
 km = KMeans(n_clusters=num_clusters)
 %time km.fit(tfidf_matrix)
 clusters = km.labels_.tolist()
 
 
-from sklearn.externals import joblib
-#uncomment the below to save your model
-#since I've already run my model I am loading from the pickle
+# save model to pickle
 joblib.dump(km,  'doc_cluster.pkl')
-
 km = joblib.load('doc_cluster.pkl')
+
 clusters = km.labels_.tolist()
 
 
 # multi-dimensional scaling
-import os  # for os.path.basename
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-from sklearn.manifold import MDS
-
 MDS()
 
 # convert two components as we're plotting points in a two-dimensional plane
@@ -122,8 +126,6 @@ xs, ys = pos[:, 0], pos[:, 1]
 
 
 # cluster centroid
-from __future__ import print_function
-
 print("Top terms per cluster:")
 print()
 #sort cluster centers by proximity to centroid
@@ -307,8 +309,6 @@ mpld3.display() #show the plot
 #print(html)
 
 
-
-from scipy.cluster.hierarchy import ward, dendrogram
 
 linkage_matrix = ward(dist) #define the linkage_matrix using ward clustering pre-computed distances
 
