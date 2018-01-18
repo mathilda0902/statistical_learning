@@ -113,26 +113,6 @@ def build_kdtree(points, depth=0):
 
 kdtree = build_kdtree(points)
 
-def kdtree_naive_closest_point(root, point, depth=0, best=None):
-    if root is None:
-        return best
-
-    axis = depth % k
-
-    next_best = None
-    next_branch = None
-
-    if best is None or distance(point, best) > distance(point, root['point']):
-        next_best = root['point']
-    else:
-        next_best = best
-
-    if point[axis] < root['point'][axis]:
-        next_branch = root['left']
-    else:
-        next_branch = root['right']
-
-    return kdtree_naive_closest_point(next_branch, point, depth + 1, next_best)
 
 def closer_distance(pivot, p1, p2):
     if p1 is None:
@@ -243,39 +223,3 @@ Out[133]:
      front desk  business service    value  location
 100    0.652542           0.35109  4.37046  4.146489
 '''
-
-
-# FLANN
-import cProfile
-from numpy import random
-from pyflann import *
-from scipy import spatial
-
-# Config params
-dim = 4
-knn = 5
-dataSize = 1000
-testSize = 1
-
-# Generate data
-random.seed(1)
-dataset = random.rand(dataSize, dim)
-testset = random.rand(testSize, dim)
-
-def test1(numIter=1000):
-    '''Test tree build time.'''
-    flann = FLANN()
-    for k in range(numIter):
-        kdtree = spatial.cKDTree(dataset, leafsize=10)
-        params = flann.build_index(dataset, target_precision=0.0, log_level = 'info')
-
-def test2(numIter=100):
-    kdtree = spatial.cKDTree(dataset, leafsize=10)
-    flann = FLANN()
-    params = flann.build_index(dataset, target_precision=0.0, log_level = 'info')
-    for k in range(numIter):
-        result1 = kdtree.query(testset, 5)
-        result2 = flann.nn_index(testset, 5, checks=params['checks'])
-
-import cProfile
-cProfile.run('test2()', 'out.prof')

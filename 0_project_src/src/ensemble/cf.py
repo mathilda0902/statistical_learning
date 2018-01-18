@@ -23,32 +23,27 @@ df = ratings[['user', 'hotel id', 'ratings']]
 reader = Reader(rating_scale=(1, 5))
 
 # The columns must correspond to user id, item id and ratings (in that order).
-data = Dataset.load_from_df(df[['user', 'hotel id', 'ratings']], reader)
+data = Dataset.load_from_df(ratings, reader)
 
 # We can now use this dataset as we please, e.g. calling cross_validate
 cross_validate(NormalPredictor(), data, cv=2)
 
-
+#estimate normal distribution mu and sigma of all ratings:
+# major_region_ratings
+t = ratings['ratings']
+arr = t.as_matrix()
+#In [50]: arr[:10]
+#Out[50]: array([5., 3., 4., 4., 4., 4., 2., 1., 4., 5.])
+In [53]: np.mean(arr)
+Out[53]: 3.9996730626141463
+In [54]: np.var(arr)
+Out[54]: 1.3228787458999327
+normal(4, 1.322879)
 
 from surprise import SVD
 from surprise import accuracy
 from surprise.model_selection import KFold
 from surprise.model_selection import GridSearchCV
-
-# CV
-# define a cross-validation iterator
-kf = KFold(n_splits=3)
-
-algo = SVD()
-
-for trainset, testset in kf.split(data):
-
-    # train and test algorithm.
-    algo.fit(trainset)
-    predictions = algo.test(testset)
-
-    # Compute and print Root Mean Squared Error
-    accuracy.rmse(predictions, verbose=True)
 
 
 # grid search for SVD:

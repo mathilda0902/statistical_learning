@@ -73,9 +73,9 @@ class knn_baseline(object):
 if __name__ == '__main__':
 	pool = Pool(processes=5)
 	user_item = pd.read_csv('dataset/user_item_pop.csv')
-	user_split = user_item.groupby('user country')
+	#user_split = user_item.groupby('user country')
 	hotel_split = user_item.groupby(['city'])
-	sub_user_geo = [user_split.get_group(x) for x in user_split.groups]
+	#sub_user_geo = [user_split.get_group(x) for x in user_split.groups]
 	sub_hotel_geo = [hotel_split.get_group(x) for x in hotel_split.groups]
 	print pool.map(matToSim, sub_user_geo)
 	print pool.map(predict, sub_user_geo)

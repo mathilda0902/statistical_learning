@@ -24,22 +24,47 @@ import mpld3
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-#filepath = 'dataset/hotel_name_reviews.csv'
-def read_reviews(filepath):
-    ratings = pd.read_csv(filepath)
-    reviews = ratings.groupby('hotel name')['content'].apply(list)
-    reviews = reviews.reset_index()
-    hotel_names = reviews['hotel name'].tolist()
-    all_reviews = reviews['content'].tolist()
-    hotel_reviews = []
-    for review in all_reviews:
-        hotel_reviews.append('.'.join(review))
+#filepath = 'hotel/3k_hotel_reviews.csv'
+#def read_reviews(filepath):
+#    ratings = pd.read_csv(filepath)
+#    reviews = ratings.groupby('hotel name')['content'].apply(list)
+#    reviews = reviews.reset_index()
+#    hotel_names = reviews['hotel name'].tolist()
+#    all_reviews = reviews['content'].tolist()
+#    hotel_reviews = []
+#    for review in all_reviews:
+#        hotel_reviews.append('.'.join(review))
+#    return hotel_names, hotel_reviews
 
-with open('dataset/hotel_names.txt', 'w') as outfile:
+# read review data and get the hotel names and review corpus:
+def read_reviews(namesfile, reviewsfile):
+    with open(namesfile, 'r') as outfile:
+        hotel_names = json.load(outfile)
+    with open(reviewsfile, 'r', encoding='utf-8', errors='ignore') as outfile:
+        hotel_reviews = json.load(outfile)
+    return hotel_names, hotel_reviews
+hotel_names, hotel_reviews = read_reviews('hotel/hotel_names.txt', 'hotel/hotel_reviews.txt')
+
+hotel_names, hotel_reviews = read_reviews('hotel/3k_hotel_reviews.csv')
+
+with open('hotel/hotel_names.txt', 'w') as outfile:
     json.dump(hotel_names, outfile)
 
-with open('dataset/hotel_reviews.txt', 'w') as outfile:
+with open('hotel/hotel_reviews.txt', 'w') as outfile:
     json.dump(hotel_reviews, outfile)
+
+with open('hotel/hotel_names.txt', 'r') as outfile:
+    hotel_names = json.load(outfile)
+
+with open('hotel/hotel_reviews.txt', 'r') as outfile:
+    hotel_reviews = json.load(outfile)
+
+with open('hotel/hotel_vocab_stemmed.txt', 'r') as outfile:
+    hotel_vocab_stemmed = json.load(outfile)
+
+with open('hotel/hotel_vocab_tokenized.txt', 'r') as outfile:
+    hotel_vocab_tokenized = json.load(outfile)
+
 
 # load nltk's English stopwords as variable called 'stopwords'
 stopwords = nltk.corpus.stopwords.words('english')
@@ -67,27 +92,35 @@ def tokenize_only(text):
             filtered_tokens.append(token)
     return filtered_tokens
 
-totalvocab_stemmed = []
-totalvocab_tokenized = []
-for i in hotel_reviews:
+'''
+hotel_vocab_stemmed = []
+hotel_vocab_tokenized = []
+for i in hotel_reviews[:200]:
     allwords_stemmed = tokenize_and_stem(i)
-    totalvocab_stemmed.extend(allwords_stemmed)
+    hotel_vocab_stemmed.extend(allwords_stemmed)
     allwords_tokenized = tokenize_only(i)
-    totalvocab_tokenized.extend(allwords_tokenized)
+    hotel_vocab_tokenized.extend(allwords_tokenized)
+'''
 
+with open('hotel/hotel_vocab_tokenized.txt', 'r') as f:
+    hotel_vocab_tokenized = json.load(f)
+with open('hotel/hotel_vocab_stemmed.txt', 'r') as f:
+    hotel_vocab_stemmed = json.load(f)
 
-
-vocab_frame = pd.DataFrame({'words': totalvocab_tokenized}, index = totalvocab_stemmed)
-print 'there are ' + str(vocab_frame.shape[0]) + ' items in vocab_frame'
+hotel_vocab = pd.DataFrame({'words': hotel_vocab_tokenized}, index = hotel_vocab_stemmed)
+print ('there are ' + str(hotel_vocab.shape[0]) + ' items in hotel_vocab')
 # there are 6188088 items in vocab_frame
 
+user_vocab = pd.DataFrame({'words': user_vocab_tokenized}, index = user_vocab_stemmed)
+print 'there are ' + str(user_vocab.shape[0])  + ' items in user_vocab'
+# there are 6188088 items in vocab_frame
 
 #define vectorizer parameters
 tfidf_vectorizer = TfidfVectorizer(max_df=0.8, max_features=200000,
                                  min_df=0.2, stop_words='english',
                                  use_idf=True, tokenizer=tokenize_and_stem, ngram_range=(1,3))
 
-%time tfidf_matrix = tfidf_vectorizer.fit_transform(all_reviews[:100]) #fit the vectorizer to reviews
+%time tfidf_matrix = tfidf_vectorizer.fit_transform(hotel_reviews) #fit the vectorizer to reviews
 print(tfidf_matrix.shape)
 #CPU times: user 58.6 s, sys: 500 ms, total: 59.1 s
 #Wall time: 59.4 s
@@ -96,6 +129,8 @@ print(tfidf_matrix.shape)
 terms = tfidf_vectorizer.get_feature_names()
 dist = 1 - cosine_similarity(tfidf_matrix)
 
+joblib.dump(terms, 'hotel/features.pkl')
+terms = joblib.load('hotel/features.pkl')
 
 
 # k-means clustering
