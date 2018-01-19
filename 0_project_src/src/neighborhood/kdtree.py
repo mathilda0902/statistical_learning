@@ -1,135 +1,225 @@
-from random import seed, random
-from time import clock
-from operator import itemgetter
-from collections import namedtuple
-from math import sqrt
-from copy import deepcopy
-# https://rosettacode.org/wiki/K-d_tree#Python
-# for tfidf:
-# https://www.analyticsvidhya.com/blog/2017/11/information-retrieval-using-kdtree/
-# scikit ann
-# http://scikits.appspot.com/ann
-# http://www.cs.umd.edu/~mount/ANN/
+# knn on dimensions: (40 major regions)
+# hotels (high dimensions)
+# sub ratings (only 7), similarity among the hotels
+# high frequency words: similarity among the travelers
 
 
-# ball tree: change distance is enough?
-def sqd(p1, p2):
-    return sum((c1 - c2) ** 2 for c1, c2 in zip(p1, p2))
+import math
+import pprint
+import numpy as np
+import sklearn.preprocessing as pp
+
+ppr = pprint.PrettyPrinter(indent=4)
+
+def euc_distance(point1, point2):
+    diff = np.subtract(point1, point2)
+    dist = np.linalg.norm(diff)
+    return dist
+
+def _userItemMatrix(arr):
+	df = df[['user', 'hotel id', 'ratings']]
+	pdf = pd.pivot_table(df, index=['user'], columns = 'hotel id', values = "ratings").fillna(0)
+	mat = csr_matrix(pdf)
+    mat = df.astype(float).values
+	return mat
+
+def userCosineSim(arr):
+    # base similarity matrix (all dot products)
+    # replace this with A.dot(A.T).toarray() for sparse representation
+    similarity = np.dot(arr, arr.T)
+    # squared magnitude of preference vectors (number of occurrences)
+    square_mag = np.diag(similarity)
+    # inverse squared magnitude
+    inv_square_mag = 1 / square_mag
+    # if it doesn't occur, set it's inverse magnitude to zero (instead of inf)
+    inv_square_mag[np.isinf(inv_square_mag)] = 0
+    # inverse of the magnitude
+    inv_mag = np.sqrt(inv_square_mag)
+    # cosine similarity (elementwise multiply by inverse magnitudes)
+    cosine = similarity * inv_mag
+    cosine = cosine.T * inv_mag
+    return cosine
+
+def itemCosineSim(arr):
+    arr = arr.T
+    # base similarity matrix (all dot products)
+    # replace this with A.dot(A.T).toarray() for sparse representation
+    similarity = np.dot(arr, arr.T)
+    # squared magnitude of preference vectors (number of occurrences)
+    square_mag = np.diag(similarity)
+    # inverse squared magnitude
+    inv_square_mag = 1 / square_mag
+    # if it doesn't occur, set it's inverse magnitude to zero (instead of inf)
+    inv_square_mag[np.isinf(inv_square_mag)] = 0
+    # inverse of the magnitude
+    inv_mag = np.sqrt(inv_square_mag)
+    # cosine similarity (elementwise multiply by inverse magnitudes)
+    cosine = similarity * inv_mag
+    cosine = cosine.T * inv_mag
+    return cosine
+
+'''
+A = np.array([[ 4.,  5.,  4.],
+       [ 3.,  4.,  3.],
+       [ 1.,  1.,  1.],
+       [ 2.,  5.,  5.],
+       [ 4.,  2.,  2.]], dtype=np.longdouble)
+In [181]: cosineSim(mat)
+Out[181]:
+array([[ 1.        ,  0.99948387,  0.99413485,  0.95530392,  0.91925472],
+       [ 0.99948387,  1.        ,  0.99014754,  0.95685806,  0.91018205],
+       [ 0.99413485,  0.99014754,  1.        ,  0.94280904,  0.94280904],
+       [ 0.95530392,  0.95685806,  0.94280904,  1.        ,  0.77777778],
+       [ 0.91925472,  0.91018205,  0.94280904,  0.77777778,  1.        ]])
+'''
+'''
+from sklearn.metrics import pairwise_distances
+from scipy.spatial.distance import cosine
+dist_out = 1-pairwise_distances(A, metric="cosine")
+'''
+'''
+def closest_point(all_points, new_point):
+    best_point = None
+    best_distance = None
+
+    for current_point in all_points:
+        current_distance = distance(new_point, current_point)
+
+        if best_distance is None or current_distance < best_distance:
+            best_distance = current_distance
+            best_point = current_point
+
+    return best_point
+'''
+
+def angDist(arr):
+    pass
+
+def build_kdtree(points, depth=0):
+    n = len(points)
+
+    if n <= 0:
+        return None
+
+    axis = depth % k
+
+    sorted_points = sorted(points, key=lambda point: point[axis])
+
+    return {
+        'point': sorted_points[n / 2],
+        'left': build_kdtree(sorted_points[:n / 2], depth + 1),
+        'right': build_kdtree(sorted_points[n/2 + 1:], depth + 1)
+    }
+
+kdtree = build_kdtree(points)
 
 
-class KdNode(object):
-    __slots__ = ("dom_elt", "split", "left", "right")
+def closer_distance(pivot, p1, p2):
+    if p1 is None:
+        return p2
 
-    def __init__(self, dom_elt, split, left, right):
-        self.dom_elt = dom_elt
-        self.split = split
-        self.left = left
-        self.right = right
+    if p2 is None:
+        return p1
 
+    d1 = euc_distance(pivot, p1)
+    d2 = euc_distance(pivot, p2)
 
-class Orthotope(object):
-    __slots__ = ("min", "max")
-
-    def __init__(self, mi, ma):
-        self.min, self.max = mi, ma
-
-
-class KdTree(object):
-    __slots__ = ("n", "bounds")
-
-    def __init__(self, pts, bounds):
-        def nk2(split, exset):
-            if not exset:
-                return None
-            exset.sort(key=itemgetter(split))
-            m = len(exset) // 2
-            d = exset[m]
-            while m + 1 < len(exset) and exset[m + 1][split] == d[split]:
-                m += 1
-
-            s2 = (split + 1) % len(d)  # cycle coordinates
-            return KdNode(d, split, nk2(s2, exset[:m]),
-                                    nk2(s2, exset[m + 1:]))
-        self.n = nk2(0, pts)
-        self.bounds = bounds
-
-T3 = namedtuple("T3", "nearest dist_sqd nodes_visited")
+    if d1 < d2:
+        return p1
+    else:
+        return p2
 
 
-def find_nearest(k, t, p):
-    def nn(kd, target, hr, max_dist_sqd):
-        if kd is None:
-            return T3([0.0] * k, float("inf"), 0)
+def kdtree_closest_point(root, point, depth=0):
+    if root is None:
+        return None
 
-        nodes_visited = 1
-        s = kd.split
-        pivot = kd.dom_elt
-        left_hr = deepcopy(hr)
-        right_hr = deepcopy(hr)
-        left_hr.max[s] = pivot[s]
-        right_hr.min[s] = pivot[s]
+    axis = depth % k
 
-        if target[s] <= pivot[s]:
-            nearer_kd, nearer_hr = kd.left, left_hr
-            further_kd, further_hr = kd.right, right_hr
-        else:
-            nearer_kd, nearer_hr = kd.right, right_hr
-            further_kd, further_hr = kd.left, left_hr
+    next_branch = None
+    opposite_branch = None
 
-        n1 = nn(nearer_kd, target, nearer_hr, max_dist_sqd)
-        nearest = n1.nearest
-        dist_sqd = n1.dist_sqd
-        nodes_visited += n1.nodes_visited
+    if point[axis] < root['point'][axis]:
+        next_branch = root['left']
+        opposite_branch = root['right']
+    else:
+        next_branch = root['right']
+        opposite_branch = root['left']
 
-        if dist_sqd < max_dist_sqd:
-            max_dist_sqd = dist_sqd
-        d = (pivot[s] - target[s]) ** 2
-        if d > max_dist_sqd:
-            return T3(nearest, dist_sqd, nodes_visited)
-        d = sqd(pivot, target)
-        if d < dist_sqd:
-            nearest = pivot
-            dist_sqd = d
-            max_dist_sqd = dist_sqd
+    best = closer_distance(point,
+                           kdtree_closest_point(next_branch,
+                                                point,
+                                                depth + 1),
+                           root['point'])
 
-        n2 = nn(further_kd, target, further_hr, max_dist_sqd)
-        nodes_visited += n2.nodes_visited
-        if n2.dist_sqd < dist_sqd:
-            nearest = n2.nearest
-            dist_sqd = n2.dist_sqd
+    if euc_distance(point, best) > abs(point[axis] - root['point'][axis]):
+        best = closer_distance(point,
+                               kdtree_closest_point(opposite_branch,
+                                                    point,
+                                                    depth + 1),
+                               best)
 
-        return T3(nearest, dist_sqd, nodes_visited)
+    return best
 
-    return nn(t.n, p, t.bounds, float("inf"))
+# run on hotel info with 7d tree:
+'''
+In [84]: test
+Out[84]:
+         hotel id  rooms  service  cleanliness  front desk  business service  \
+0           99774    3.0      5.0          5.0         0.0               0.0
+1           99774    4.0      5.0          5.0         0.0               0.0
+2           99774    3.0      3.0          3.0         0.0               0.0
+3           99774    5.0      5.0          5.0         0.0               0.0
+4           99774    4.0      4.0          4.0         0.0               0.0
+5           99774    4.0      4.0          4.0         0.0               0.0
+'''
 
+test.groupby('hotel id').mean()
+training = test[:100]
+test = test[100:200]
+training_points = training.as_matrix()
+test_points = test.as_matrix()
+test_hotel1 = test_points[0]
+test_hotel2 = test_points[1]
+test_hotel3 = test_points[2]
 
-def show_nearest(k, heading, kd, p):
-    print(heading + ":")
-    print("Point:           ", p)
-    n = find_nearest(k, kd, p)
-    print("Nearest neighbor:", n.nearest)
-    print("Distance:        ", sqrt(n.dist_sqd))
-    print("Nodes visited:   ", n.nodes_visited, "\n")
+k = 7
+kdtree = build_kdtree(training_points)
+rec_hotel1 = kdtree_closest_point(kdtree, test_hotel1)
 
-def random_point(k):
-    return [random() for _ in range(k)]
+# rec 85 in training_points = nyc[85]: hotel id == 217622
+# test[0] in nyc[200]: hotel id == 2514392
 
-def random_points(k, n):
-    return [random_point(k) for _ in range(n)]
+'''
+In [120]: hotel_names[hotel_names['hotel id'] == 79868]
+Out[120]:
+                    hotel name  hotel id       city     state zip code  \
+11709  Bay Club Hotel & Marina     79868  San Diego  CA 92106    92106
 
-if __name__ == "__main__":
-    seed(1)
-    P = lambda *coords: list(coords)
-    kd1 = KdTree([P(2, 3), P(5, 4), P(9, 6), P(4, 7), P(8, 1), P(7, 2)],
-                  Orthotope(P(0, 0), P(10, 10)))
-    show_nearest(2, "Wikipedia example data", kd1, P(9, 2))
+      low price high price
+11709      $129       $217
 
-    N = 400000
-    t0 = clock()
-    kd2 = KdTree(random_points(3, N), Orthotope(P(0, 0, 0), P(1, 1, 1)))
-    t1 = clock()
-    text = lambda *parts: "".join(map(str, parts))
-    show_nearest(2, text("k-d tree with ", N,
-                         " random 3D points (generation time: ",
-                         t1-t0, "s)"),
-                 kd2, random_point(3))
+In [121]: hotel_names[hotel_names['hotel id'] == 81394]
+Out[121]:
+                hotel name  hotel id           city     state zip code  \
+11905  The Donatello Hotel     81394  San Francisco  CA 94102    94102
+
+      low price high price
+11905      $171       $710
+
+In [132]: hotels[hotels['hotel id'] == 79868]
+Out[132]:
+    hotel id  Unnamed: 0   ratings     rooms   service  cleanliness  \
+45     79868    155255.5  4.443262  3.801418  4.400709     4.329787
+
+    front desk  business service     value  location
+45    0.765957          0.439716  4.230496   4.06383
+
+In [133]: hotels[hotels['hotel id'] == 81394]
+Out[133]:
+     hotel id  Unnamed: 0  ratings     rooms   service  cleanliness  \
+100     81394    134616.5  4.53753  3.924939  4.470944      4.48184
+
+     front desk  business service    value  location
+100    0.652542           0.35109  4.37046  4.146489
+'''

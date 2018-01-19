@@ -47,7 +47,8 @@ from surprise.model_selection import GridSearchCV
 
 
 # grid search for SVD:
-param_grid = {'n_epochs': [5, 10], 'lr_all': [0.002, 0.005],
+param_grid = {'n_epochs': [5, 10, 15, 20, 25, 30], 'lr_all': [0.002, 0.005],
+                'biased': [True, False], 'init_mean': [0, 1, 2, 3, 4, 5], 
               'reg_all': [0.4, 0.6]}
 gs = GridSearchCV(SVD, param_grid, measures=['rmse', 'mae'], cv=3)
 
