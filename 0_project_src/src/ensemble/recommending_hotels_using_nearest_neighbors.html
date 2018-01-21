@@ -11795,7 +11795,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span> 
@@ -11821,11 +11821,11 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[86]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">hotel_ratings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../../dataset/nearest_neighbors_hotel.csv&#39;</span><span class="p">)</span>
-<span class="n">hotel_ratings</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">hotel_ratings</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -11838,7 +11838,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[26]:</div>
+<div class="prompt output_prompt">Out[86]:</div>
 
 
 
@@ -11963,771 +11963,6 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
       <td>$90</td>
       <td>$172</td>
     </tr>
-    <tr>
-      <th>5</th>
-      <td>73957</td>
-      <td>3.353635</td>
-      <td>3.591356</td>
-      <td>3.766208</td>
-      <td>0.734774</td>
-      <td>0.339882</td>
-      <td>3.532417</td>
-      <td>3.159136</td>
-      <td>Pointe Hilton Squaw Peak Resort</td>
-      <td>Phoenix</td>
-      <td>AZ 85020</td>
-      <td>85020</td>
-      <td>$99</td>
-      <td>$214</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>74626</td>
-      <td>3.512658</td>
-      <td>3.430380</td>
-      <td>4.012658</td>
-      <td>0.974684</td>
-      <td>0.683544</td>
-      <td>3.645570</td>
-      <td>2.981013</td>
-      <td>Legacy Golf Resort</td>
-      <td>Phoenix</td>
-      <td>AZ 85042</td>
-      <td>85042</td>
-      <td>$80</td>
-      <td>$186</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>75688</td>
-      <td>2.945619</td>
-      <td>3.244713</td>
-      <td>3.649547</td>
-      <td>0.897281</td>
-      <td>0.504532</td>
-      <td>3.024169</td>
-      <td>3.595166</td>
-      <td>Dream New York</td>
-      <td>New York City</td>
-      <td>NY 10019</td>
-      <td>10019</td>
-      <td>$247</td>
-      <td>$1,138</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>75711</td>
-      <td>2.977591</td>
-      <td>3.599440</td>
-      <td>3.607843</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>3.554622</td>
-      <td>4.019608</td>
-      <td>Best Western PLUS President Hotel at Times Square</td>
-      <td>New York City</td>
-      <td>NY 10036</td>
-      <td>10036</td>
-      <td>$223</td>
-      <td>$830</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>76049</td>
-      <td>3.452555</td>
-      <td>4.401460</td>
-      <td>4.452555</td>
-      <td>0.729927</td>
-      <td>0.459854</td>
-      <td>3.905109</td>
-      <td>3.503650</td>
-      <td>Four Seasons Hotel Los Angeles at Beverly Hills</td>
-      <td>Los Angeles</td>
-      <td>CA 90048</td>
-      <td>90048</td>
-      <td>$480</td>
-      <td>$674</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>76061</td>
-      <td>2.958621</td>
-      <td>3.544828</td>
-      <td>3.610345</td>
-      <td>0.517241</td>
-      <td>0.431034</td>
-      <td>3.300000</td>
-      <td>2.803448</td>
-      <td>Crowne Plaza Beverly Hills</td>
-      <td>Los Angeles</td>
-      <td>CA 90035</td>
-      <td>90035</td>
-      <td>$210</td>
-      <td>$277</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>76082</td>
-      <td>3.029630</td>
-      <td>3.659259</td>
-      <td>3.874074</td>
-      <td>0.392593</td>
-      <td>0.244444</td>
-      <td>3.800000</td>
-      <td>2.992593</td>
-      <td>BEST WESTERN McCarran Inn</td>
-      <td>Las Vegas</td>
-      <td>NV 89119</td>
-      <td>89119</td>
-      <td>$61</td>
-      <td>$111</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>76083</td>
-      <td>3.741379</td>
-      <td>4.041872</td>
-      <td>4.263547</td>
-      <td>0.793103</td>
-      <td>0.600985</td>
-      <td>3.655172</td>
-      <td>3.692118</td>
-      <td>Sofitel Los Angeles</td>
-      <td>Los Angeles</td>
-      <td>CA 90048</td>
-      <td>90048</td>
-      <td>$243</td>
-      <td>$389</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>76279</td>
-      <td>2.977778</td>
-      <td>3.681481</td>
-      <td>3.925926</td>
-      <td>0.881481</td>
-      <td>0.422222</td>
-      <td>3.651852</td>
-      <td>3.414815</td>
-      <td>Dr. Wilkinson's Hot Springs Resort</td>
-      <td>Calistoga</td>
-      <td>CA 94515</td>
-      <td>94515</td>
-      <td>$109</td>
-      <td>$199</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>76442</td>
-      <td>3.381098</td>
-      <td>3.615854</td>
-      <td>3.844512</td>
-      <td>1.042683</td>
-      <td>0.573171</td>
-      <td>3.207317</td>
-      <td>3.100610</td>
-      <td>Hyatt Regency Century Plaza</td>
-      <td>Los Angeles</td>
-      <td>CA 90067</td>
-      <td>90067</td>
-      <td>$234</td>
-      <td>$460</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>76686</td>
-      <td>4.047904</td>
-      <td>4.724551</td>
-      <td>4.664671</td>
-      <td>0.143713</td>
-      <td>0.059880</td>
-      <td>4.610778</td>
-      <td>4.131737</td>
-      <td>BEST WESTERN Music Capital Inn</td>
-      <td>Branson</td>
-      <td>MO 65616-8104</td>
-      <td>65616-8104</td>
-      <td>$94 and up</td>
-      <td>null</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>76741</td>
-      <td>3.089172</td>
-      <td>3.808917</td>
-      <td>3.923567</td>
-      <td>0.878981</td>
-      <td>0.445860</td>
-      <td>3.515924</td>
-      <td>3.350318</td>
-      <td>Hilton San Diego Mission Valley</td>
-      <td>San Diego</td>
-      <td>CA 92108</td>
-      <td>92108</td>
-      <td>$131</td>
-      <td>$233</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>76793</td>
-      <td>3.703125</td>
-      <td>4.234375</td>
-      <td>4.234375</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>4.070312</td>
-      <td>3.867188</td>
-      <td>Comfort Inn Near Old Town Pasadena - Eagle Rock</td>
-      <td>Los Angeles</td>
-      <td>CA 90041</td>
-      <td>90041</td>
-      <td>$97</td>
-      <td>$102</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>77157</td>
-      <td>3.273256</td>
-      <td>4.482558</td>
-      <td>4.529070</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>4.401163</td>
-      <td>3.040698</td>
-      <td>Rodeway Inn &amp; Suites Pacific Coast Highway</td>
-      <td>Los Angeles</td>
-      <td>CA 90710</td>
-      <td>90710</td>
-      <td>$73</td>
-      <td>$85</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>77237</td>
-      <td>2.901818</td>
-      <td>2.916364</td>
-      <td>3.327273</td>
-      <td>0.665455</td>
-      <td>0.396364</td>
-      <td>3.200000</td>
-      <td>2.683636</td>
-      <td>Hollywood Hotel</td>
-      <td>Los Angeles</td>
-      <td>CA 90029</td>
-      <td>90029</td>
-      <td>$107</td>
-      <td>$228</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>77243</td>
-      <td>3.359375</td>
-      <td>3.375000</td>
-      <td>3.835938</td>
-      <td>1.148438</td>
-      <td>0.546875</td>
-      <td>3.609375</td>
-      <td>3.242188</td>
-      <td>BEST WESTERN PLUS Hollywood Hills Hotel</td>
-      <td>Los Angeles</td>
-      <td>CA 90028</td>
-      <td>90028</td>
-      <td>$118</td>
-      <td>$225</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>77270</td>
-      <td>3.281579</td>
-      <td>3.918421</td>
-      <td>3.836842</td>
-      <td>1.155263</td>
-      <td>0.842105</td>
-      <td>4.189474</td>
-      <td>4.039474</td>
-      <td>Hollywood Orchid Suites</td>
-      <td>Los Angeles</td>
-      <td>CA 90028</td>
-      <td>90028</td>
-      <td>$134</td>
-      <td>$214</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>77274</td>
-      <td>2.737255</td>
-      <td>3.203922</td>
-      <td>3.407843</td>
-      <td>0.825490</td>
-      <td>0.572549</td>
-      <td>2.876471</td>
-      <td>3.349020</td>
-      <td>Hollywood Roosevelt Hotel - A Thompson Hotel</td>
-      <td>Los Angeles</td>
-      <td>CA 90028</td>
-      <td>90028</td>
-      <td>$222</td>
-      <td>$414</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>77638</td>
-      <td>3.190141</td>
-      <td>3.852113</td>
-      <td>3.795775</td>
-      <td>0.514085</td>
-      <td>0.359155</td>
-      <td>3.598592</td>
-      <td>3.802817</td>
-      <td>BEST WESTERN PLUS Boston - The Inn at Longwood...</td>
-      <td>Boston</td>
-      <td>MA 02115</td>
-      <td>02115</td>
-      <td>$204</td>
-      <td>$310</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>77676</td>
-      <td>2.895522</td>
-      <td>4.007463</td>
-      <td>3.835821</td>
-      <td>0.201493</td>
-      <td>0.044776</td>
-      <td>4.007463</td>
-      <td>3.246269</td>
-      <td>Sea Bay Hotel</td>
-      <td>Ocean City</td>
-      <td>MD 21842</td>
-      <td>21842</td>
-      <td>$57 and up</td>
-      <td>null</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>77700</td>
-      <td>3.442244</td>
-      <td>3.745875</td>
-      <td>3.930693</td>
-      <td>0.603960</td>
-      <td>0.389439</td>
-      <td>3.356436</td>
-      <td>3.455446</td>
-      <td>W Los Angeles - Westwood</td>
-      <td>Los Angeles</td>
-      <td>CA 90024</td>
-      <td>90024</td>
-      <td>$313</td>
-      <td>$467</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>77714</td>
-      <td>2.910853</td>
-      <td>3.515504</td>
-      <td>3.810078</td>
-      <td>0.310078</td>
-      <td>0.089147</td>
-      <td>3.461240</td>
-      <td>3.189922</td>
-      <td>Kyoto Grand Hotel and Gardens</td>
-      <td>Los Angeles</td>
-      <td>CA 90012 (Formerly New Otani Hotel and Garden)</td>
-      <td>90012</td>
-      <td>$147</td>
-      <td>$335</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>77775</td>
-      <td>3.761062</td>
-      <td>4.253687</td>
-      <td>4.445428</td>
-      <td>0.628319</td>
-      <td>0.519174</td>
-      <td>3.991150</td>
-      <td>3.746313</td>
-      <td>Hotel Palomar Los Angeles - Westwood - a Kimpt...</td>
-      <td>Los Angeles</td>
-      <td>CA 90024</td>
-      <td>90024</td>
-      <td>$233</td>
-      <td>$408</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>77798</td>
-      <td>2.994505</td>
-      <td>3.719780</td>
-      <td>3.758242</td>
-      <td>0.527473</td>
-      <td>0.225275</td>
-      <td>3.357143</td>
-      <td>3.450549</td>
-      <td>Sheraton Los Angeles Downtown Hotel</td>
-      <td>Los Angeles</td>
-      <td>CA 90017</td>
-      <td>90017</td>
-      <td>$166</td>
-      <td>$346</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>77804</td>
-      <td>3.613043</td>
-      <td>4.123913</td>
-      <td>4.291304</td>
-      <td>1.045652</td>
-      <td>0.739130</td>
-      <td>3.960870</td>
-      <td>3.141304</td>
-      <td>Omni Los Angeles at California Plaza</td>
-      <td>Los Angeles</td>
-      <td>CA 90012</td>
-      <td>90012</td>
-      <td>$183</td>
-      <td>$378</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>77827</td>
-      <td>3.292517</td>
-      <td>3.931973</td>
-      <td>4.034014</td>
-      <td>0.598639</td>
-      <td>0.496599</td>
-      <td>3.619048</td>
-      <td>3.278912</td>
-      <td>Luxe Sunset Boulevard Hotel</td>
-      <td>Los Angeles</td>
-      <td>CA 90049</td>
-      <td>90049</td>
-      <td>$209</td>
-      <td>$314</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>77852</td>
-      <td>2.218391</td>
-      <td>3.114943</td>
-      <td>3.005747</td>
-      <td>0.419540</td>
-      <td>0.304598</td>
-      <td>3.017241</td>
-      <td>2.856322</td>
-      <td>The Wilshire Hotel Los Angeles</td>
-      <td>Los Angeles</td>
-      <td>CA 90010</td>
-      <td>90010</td>
-      <td>$113</td>
-      <td>$329</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>77866</td>
-      <td>2.810502</td>
-      <td>3.369863</td>
-      <td>3.470320</td>
-      <td>0.947489</td>
-      <td>0.552511</td>
-      <td>3.162100</td>
-      <td>3.054795</td>
-      <td>Millennium Biltmore Hotel Los Angeles</td>
-      <td>Los Angeles</td>
-      <td>CA 90071</td>
-      <td>90071</td>
-      <td>$144</td>
-      <td>$348</td>
-    </tr>
-    <tr>
-      <th>33</th>
-      <td>77874</td>
-      <td>2.927778</td>
-      <td>3.231481</td>
-      <td>3.411111</td>
-      <td>1.083333</td>
-      <td>0.575926</td>
-      <td>3.118519</td>
-      <td>3.003704</td>
-      <td>The Westin Bonaventure Hotel &amp; Suites</td>
-      <td>Los Angeles</td>
-      <td>CA 90071</td>
-      <td>90071</td>
-      <td>$144</td>
-      <td>$472</td>
-    </tr>
-    <tr>
-      <th>34</th>
-      <td>77888</td>
-      <td>3.092199</td>
-      <td>3.680851</td>
-      <td>3.886525</td>
-      <td>0.687943</td>
-      <td>0.333333</td>
-      <td>3.326241</td>
-      <td>3.191489</td>
-      <td>Hilton Checkers Hotel - Los Angeles</td>
-      <td>Los Angeles</td>
-      <td>CA 90071</td>
-      <td>90071</td>
-      <td>$210</td>
-      <td>$535</td>
-    </tr>
-    <tr>
-      <th>35</th>
-      <td>77917</td>
-      <td>3.469194</td>
-      <td>3.772512</td>
-      <td>3.872038</td>
-      <td>0.535545</td>
-      <td>0.303318</td>
-      <td>3.720379</td>
-      <td>3.611374</td>
-      <td>Embassy Suites LAX North</td>
-      <td>Los Angeles</td>
-      <td>CA 90045</td>
-      <td>90045</td>
-      <td>$128</td>
-      <td>$264</td>
-    </tr>
-    <tr>
-      <th>36</th>
-      <td>77923</td>
-      <td>2.770115</td>
-      <td>2.919540</td>
-      <td>3.264368</td>
-      <td>0.591954</td>
-      <td>0.396552</td>
-      <td>3.040230</td>
-      <td>2.614943</td>
-      <td>Holiday Inn Los Angeles International Airport</td>
-      <td>Los Angeles</td>
-      <td>CA 90045</td>
-      <td>90045</td>
-      <td>$121</td>
-      <td>$171</td>
-    </tr>
-    <tr>
-      <th>37</th>
-      <td>77944</td>
-      <td>3.680556</td>
-      <td>3.850694</td>
-      <td>4.145833</td>
-      <td>1.315972</td>
-      <td>0.868056</td>
-      <td>3.895833</td>
-      <td>3.715278</td>
-      <td>Renaissance Montura Los Angeles</td>
-      <td>Los Angeles</td>
-      <td>CA 90045</td>
-      <td>90045</td>
-      <td>$124</td>
-      <td>$280</td>
-    </tr>
-    <tr>
-      <th>38</th>
-      <td>77970</td>
-      <td>2.523810</td>
-      <td>3.251082</td>
-      <td>3.285714</td>
-      <td>0.567100</td>
-      <td>0.294372</td>
-      <td>3.406926</td>
-      <td>3.138528</td>
-      <td>Travelodge Hotel at LAX</td>
-      <td>Los Angeles</td>
-      <td>CA 90045</td>
-      <td>90045</td>
-      <td>$75</td>
-      <td>$106</td>
-    </tr>
-    <tr>
-      <th>39</th>
-      <td>78037</td>
-      <td>3.304762</td>
-      <td>3.647619</td>
-      <td>3.974603</td>
-      <td>0.984127</td>
-      <td>0.580952</td>
-      <td>3.574603</td>
-      <td>3.625397</td>
-      <td>Los Angeles Airport Marriott</td>
-      <td>Los Angeles</td>
-      <td>CA 90045</td>
-      <td>90045</td>
-      <td>$136</td>
-      <td>$316</td>
-    </tr>
-    <tr>
-      <th>40</th>
-      <td>78046</td>
-      <td>2.944363</td>
-      <td>3.811127</td>
-      <td>3.762811</td>
-      <td>0.569546</td>
-      <td>0.303075</td>
-      <td>3.560761</td>
-      <td>3.190337</td>
-      <td>Sheraton Gateway Los Angeles</td>
-      <td>Los Angeles</td>
-      <td>CA 90045</td>
-      <td>90045</td>
-      <td>$126</td>
-      <td>$229</td>
-    </tr>
-    <tr>
-      <th>41</th>
-      <td>78593</td>
-      <td>3.193694</td>
-      <td>3.572072</td>
-      <td>3.873874</td>
-      <td>1.072072</td>
-      <td>0.720721</td>
-      <td>3.364865</td>
-      <td>3.247748</td>
-      <td>Embassy Suites Hotel Napa Valley</td>
-      <td>Napa</td>
-      <td>CA 94559</td>
-      <td>94559</td>
-      <td>$203</td>
-      <td>$378</td>
-    </tr>
-    <tr>
-      <th>42</th>
-      <td>78682</td>
-      <td>3.431373</td>
-      <td>3.983193</td>
-      <td>4.168067</td>
-      <td>0.753501</td>
-      <td>0.434174</td>
-      <td>3.809524</td>
-      <td>3.476190</td>
-      <td>Beverly Garland's Holiday Inn</td>
-      <td>Los Angeles</td>
-      <td>CA 91602</td>
-      <td>91602</td>
-      <td>$163</td>
-      <td>$241</td>
-    </tr>
-    <tr>
-      <th>43</th>
-      <td>78688</td>
-      <td>2.829412</td>
-      <td>3.417647</td>
-      <td>3.541176</td>
-      <td>0.329412</td>
-      <td>0.152941</td>
-      <td>3.435294</td>
-      <td>3.447059</td>
-      <td>Sportsmen's Lodge Hotel</td>
-      <td>Los Angeles</td>
-      <td>CA 91604</td>
-      <td>91604</td>
-      <td>$162</td>
-      <td>$197</td>
-    </tr>
-    <tr>
-      <th>44</th>
-      <td>78694</td>
-      <td>3.553606</td>
-      <td>3.844055</td>
-      <td>4.019493</td>
-      <td>0.935673</td>
-      <td>0.463938</td>
-      <td>3.553606</td>
-      <td>3.569201</td>
-      <td>Hilton Los Angeles / Universal City</td>
-      <td>Los Angeles</td>
-      <td>CA 91608-1001</td>
-      <td>91608-1001</td>
-      <td>$191</td>
-      <td>$345</td>
-    </tr>
-    <tr>
-      <th>45</th>
-      <td>79868</td>
-      <td>3.801418</td>
-      <td>4.400709</td>
-      <td>4.329787</td>
-      <td>0.765957</td>
-      <td>0.439716</td>
-      <td>4.230496</td>
-      <td>4.063830</td>
-      <td>Bay Club Hotel &amp; Marina</td>
-      <td>San Diego</td>
-      <td>CA 92106</td>
-      <td>92106</td>
-      <td>$129</td>
-      <td>$217</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>79873</td>
-      <td>3.039683</td>
-      <td>3.722222</td>
-      <td>3.777778</td>
-      <td>0.666667</td>
-      <td>0.476190</td>
-      <td>3.714286</td>
-      <td>3.309524</td>
-      <td>Holiday Inn Express San Diego Downtown</td>
-      <td>San Diego</td>
-      <td>CA 92101 (Formerly Quality Inn &amp; Suites Harbor...</td>
-      <td>92101</td>
-      <td>$113</td>
-      <td>$257</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>79907</td>
-      <td>3.510204</td>
-      <td>4.147959</td>
-      <td>4.061224</td>
-      <td>0.545918</td>
-      <td>0.336735</td>
-      <td>3.948980</td>
-      <td>4.056122</td>
-      <td>BEST WESTERN PLUS Blue Sea Lodge</td>
-      <td>San Diego</td>
-      <td>CA 92109</td>
-      <td>92109</td>
-      <td>$164</td>
-      <td>$402</td>
-    </tr>
-    <tr>
-      <th>48</th>
-      <td>79913</td>
-      <td>2.867550</td>
-      <td>3.231788</td>
-      <td>3.688742</td>
-      <td>0.748344</td>
-      <td>0.569536</td>
-      <td>3.483444</td>
-      <td>3.668874</td>
-      <td>BEST WESTERN PLUS Hacienda Hotel Old Town</td>
-      <td>San Diego</td>
-      <td>CA 92110</td>
-      <td>92110</td>
-      <td>$123</td>
-      <td>$196</td>
-    </tr>
-    <tr>
-      <th>49</th>
-      <td>79942</td>
-      <td>2.450617</td>
-      <td>3.154321</td>
-      <td>3.419753</td>
-      <td>0.833333</td>
-      <td>0.462963</td>
-      <td>3.370370</td>
-      <td>3.074074</td>
-      <td>BEST WESTERN Seven Seas</td>
-      <td>San Diego</td>
-      <td>CA 92108</td>
-      <td>92108</td>
-      <td>$69</td>
-      <td>$160</td>
-    </tr>
   </tbody>
 </table>
 </div>
@@ -12750,7 +11985,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">euc_distance</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">):</span>
@@ -12766,7 +12001,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[87]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># we pick the first 3000 hotels to illustrate an application of our algorithm.</span>
@@ -12785,7 +12020,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[8]:</div>
+<div class="prompt output_prompt">Out[87]:</div>
 
 
 
@@ -12826,89 +12061,89 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
   </thead>
   <tbody>
     <tr>
-      <th>2550</th>
-      <td>2515356</td>
-      <td>2.631148</td>
-      <td>3.647541</td>
-      <td>3.852459</td>
-      <td>0.704918</td>
-      <td>0.409836</td>
-      <td>3.073770</td>
-      <td>3.377049</td>
-      <td>Hilton Seattle</td>
-      <td>Seattle</td>
-      <td>WA 98101-2304</td>
-      <td>98101-2304</td>
-      <td>$177</td>
-      <td>$264</td>
+      <th>764</th>
+      <td>195319</td>
+      <td>2.509317</td>
+      <td>3.298137</td>
+      <td>3.273292</td>
+      <td>0.962733</td>
+      <td>0.621118</td>
+      <td>3.267081</td>
+      <td>3.658385</td>
+      <td>Umi London</td>
+      <td>London W2 4PR</td>
+      <td>England</td>
+      <td>W2 4PR</td>
+      <td>$95</td>
+      <td>$302</td>
     </tr>
     <tr>
-      <th>393</th>
-      <td>100569</td>
-      <td>3.361111</td>
-      <td>4.350000</td>
-      <td>4.394444</td>
-      <td>0.688889</td>
-      <td>0.561111</td>
-      <td>4.066667</td>
-      <td>3.161111</td>
-      <td>The Sorrento Hotel</td>
-      <td>Seattle</td>
-      <td>WA 98104</td>
-      <td>98104</td>
-      <td>$176</td>
-      <td>$285</td>
+      <th>1764</th>
+      <td>649828</td>
+      <td>3.899281</td>
+      <td>4.169065</td>
+      <td>4.496403</td>
+      <td>0.280576</td>
+      <td>0.190647</td>
+      <td>3.798561</td>
+      <td>3.255396</td>
+      <td>Hilton Madrid Airport</td>
+      <td>28042 Madrid</td>
+      <td>Spain</td>
+      <td>28042</td>
+      <td>$130</td>
+      <td>$320</td>
     </tr>
     <tr>
-      <th>2067</th>
-      <td>2514304</td>
-      <td>2.075625</td>
-      <td>2.887238</td>
-      <td>3.313302</td>
-      <td>0.920999</td>
-      <td>0.374747</td>
-      <td>2.558406</td>
-      <td>3.291020</td>
-      <td>Hudson New York</td>
-      <td>New York City</td>
-      <td>NY 10019</td>
-      <td>10019</td>
+      <th>1559</th>
+      <td>478955</td>
+      <td>1.882353</td>
+      <td>2.170588</td>
+      <td>1.988235</td>
+      <td>0.647059</td>
+      <td>0.282353</td>
+      <td>2.117647</td>
+      <td>3.358824</td>
+      <td>Tidelands Caribbean Hotel and Suites</td>
+      <td>Ocean City</td>
+      <td>MD 21842</td>
+      <td>21842</td>
+      <td>$79 and up</td>
+      <td>null</td>
+    </tr>
+    <tr>
+      <th>1319</th>
+      <td>268228</td>
+      <td>3.236287</td>
+      <td>3.932489</td>
+      <td>4.198312</td>
+      <td>1.088608</td>
+      <td>0.586498</td>
+      <td>3.308017</td>
+      <td>3.308017</td>
+      <td>Marriott Waterfront Seattle</td>
+      <td>Seattle</td>
+      <td>WA 98121</td>
+      <td>98121</td>
       <td>$209</td>
-      <td>$555</td>
+      <td>$337</td>
     </tr>
     <tr>
-      <th>1372</th>
-      <td>282186</td>
-      <td>3.584158</td>
-      <td>3.935644</td>
-      <td>4.326733</td>
-      <td>2.237624</td>
-      <td>0.945545</td>
-      <td>3.930693</td>
-      <td>3.608911</td>
-      <td>Henri IV Rive Gauche Hotel</td>
-      <td>75005 Paris</td>
-      <td>France</td>
-      <td>75005</td>
-      <td>$239</td>
-      <td>$276</td>
-    </tr>
-    <tr>
-      <th>1067</th>
-      <td>230616</td>
-      <td>3.622829</td>
-      <td>4.275434</td>
-      <td>4.218362</td>
-      <td>1.354839</td>
-      <td>1.106700</td>
-      <td>3.947891</td>
-      <td>3.620347</td>
-      <td>Banks Mansion</td>
-      <td>Amsterdam 1017 BV</td>
-      <td>The Netherlands</td>
-      <td>1017 BV</td>
-      <td>$249</td>
-      <td>$404</td>
+      <th>1221</th>
+      <td>254348</td>
+      <td>3.467337</td>
+      <td>4.472362</td>
+      <td>4.527638</td>
+      <td>0.879397</td>
+      <td>0.462312</td>
+      <td>4.251256</td>
+      <td>3.412060</td>
+      <td>LHotel</td>
+      <td>Quebec H2Y 1N1</td>
+      <td>Canada</td>
+      <td>H2Y 1N1</td>
+      <td>$183</td>
+      <td>$263</td>
     </tr>
   </tbody>
 </table>
@@ -12923,7 +12158,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#design training and test set after random shuffle:</span>
@@ -12946,7 +12181,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[18]:</div>
+<div class="prompt output_prompt">Out[5]:</div>
 
 
 
@@ -12981,53 +12216,53 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
   <tbody>
     <tr>
       <th>0</th>
-      <td>2.631148</td>
-      <td>3.647541</td>
-      <td>3.852459</td>
-      <td>0.704918</td>
-      <td>0.409836</td>
-      <td>3.073770</td>
-      <td>3.377049</td>
+      <td>3.888128</td>
+      <td>4.337900</td>
+      <td>4.445205</td>
+      <td>1.344749</td>
+      <td>0.847032</td>
+      <td>4.152968</td>
+      <td>3.484018</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>3.361111</td>
-      <td>4.350000</td>
-      <td>4.394444</td>
-      <td>0.688889</td>
-      <td>0.561111</td>
-      <td>4.066667</td>
-      <td>3.161111</td>
+      <td>3.235012</td>
+      <td>3.774580</td>
+      <td>4.021583</td>
+      <td>0.561151</td>
+      <td>0.179856</td>
+      <td>3.573141</td>
+      <td>3.690647</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>2.075625</td>
-      <td>2.887238</td>
-      <td>3.313302</td>
-      <td>0.920999</td>
-      <td>0.374747</td>
-      <td>2.558406</td>
-      <td>3.291020</td>
+      <td>3.880383</td>
+      <td>4.325359</td>
+      <td>4.287081</td>
+      <td>0.401914</td>
+      <td>0.229665</td>
+      <td>3.928230</td>
+      <td>4.090909</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>3.584158</td>
-      <td>3.935644</td>
-      <td>4.326733</td>
-      <td>2.237624</td>
-      <td>0.945545</td>
-      <td>3.930693</td>
-      <td>3.608911</td>
+      <td>3.563253</td>
+      <td>4.174699</td>
+      <td>4.117470</td>
+      <td>0.683735</td>
+      <td>0.406627</td>
+      <td>3.756024</td>
+      <td>3.852410</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>3.622829</td>
-      <td>4.275434</td>
-      <td>4.218362</td>
-      <td>1.354839</td>
-      <td>1.106700</td>
-      <td>3.947891</td>
-      <td>3.620347</td>
+      <td>2.833333</td>
+      <td>3.371212</td>
+      <td>3.659091</td>
+      <td>0.575758</td>
+      <td>0.469697</td>
+      <td>3.356061</td>
+      <td>2.931818</td>
     </tr>
   </tbody>
 </table>
@@ -13053,7 +12288,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">build_kdtree</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -13080,7 +12315,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># turning DataFrames into array structure:</span>
@@ -13104,7 +12339,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mi">7</span>
@@ -13127,7 +12362,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">ppr</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -13155,20 +12390,20 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
                 &#39;point&#39;: array([1.60493827, 1.83950617, 1.98148148, 0.66666667, 0.2345679 ,
        1.95061728, 2.72222222]),
                 &#39;right&#39;: {   &#39;left&#39;: None,
-                             &#39;point&#39;: array([1.90965732, 2.31619938, 2.70872274, 0.42990654, 0.22741433,
-       2.2211838 , 3.02336449]),
+                             &#39;point&#39;: array([1.92322097, 2.32209738, 2.4494382 , 0.52996255, 0.17602996,
+       2.64419476, 2.71348315]),
                              &#39;right&#39;: None}},
-    &#39;point&#39;: array([2.20626632, 2.34725849, 2.82506527, 0.69712794, 0.3002611 ,
-       2.60574413, 3.25848564]),
+    &#39;point&#39;: array([1.8404908 , 2.33128834, 2.14110429, 0.25153374, 0.09815951,
+       2.39263804, 1.73619632]),
     &#39;right&#39;: {   &#39;left&#39;: {   &#39;left&#39;: None,
-                             &#39;point&#39;: array([1.67460317, 2.34920635, 1.79365079, 0.6984127 , 0.3015873 ,
-       2.06349206, 3.19047619]),
+                             &#39;point&#39;: array([1.85628743, 2.41916168, 2.25748503, 0.26347305, 0.08982036,
+       2.50299401, 1.89221557]),
                              &#39;right&#39;: None},
-                 &#39;point&#39;: array([1.95384615, 2.51538462, 2.63461538, 0.58461538, 0.14230769,
-       2.86153846, 2.64615385]),
+                 &#39;point&#39;: array([1.84587814, 2.38351254, 2.73835125, 0.        , 0.        ,
+       2.20430108, 3.13620072]),
                  &#39;right&#39;: {   &#39;left&#39;: None,
-                              &#39;point&#39;: array([2.19806763, 2.56038647, 2.97101449, 0.49275362, 0.14975845,
-       2.77294686, 3.14492754]),
+                              &#39;point&#39;: array([1.92156863, 2.76862745, 2.89019608, 0.41568627, 0.19607843,
+       2.83529412, 3.21960784]),
                               &#39;right&#39;: None}}}
 </pre>
 </div>
@@ -13190,7 +12425,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># a function that decides if points &#39;p1&#39; or &#39;p2&#39; is closer to our &#39;pivot&#39;</span>
@@ -13227,7 +12462,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># a function that searches for the closest neighbors based on a grown BST &#39;root&#39;.</span>
@@ -13277,19 +12512,19 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Let's roll up our sleeves and start <strong>climbing</strong> (searching)!</p>
-<p>If I want to know which hotel is most similar to <strong>Beverly Garland's Holiday Inn</strong> in <strong>Los Angeles, LA</strong> whose hotel id is <strong>78682</strong>:</p>
+<p>If I want to know which hotel is most similar to <strong>Hotel Erwin, a Joie de Vivre hotel</strong> in <strong>Los Angeles, LA</strong> whose hotel id is <strong>2516007</strong>:</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[66]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># uncomment the following if you are running this code for the first time</span>
-<span class="n">hotel_ratings</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;hotel name&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">hotel_ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;Beverly Garland&#39;s Holiday Inn&quot;</span><span class="p">]</span>
+<span class="c1">#hotel_ratings.set_index(&#39;hotel name&#39;, inplace=True)</span>
+<span class="n">hotel_ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;Hotel Erwin, a Joie de Vivre hotel&quot;</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -13302,7 +12537,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[28]:</div>
+<div class="prompt output_prompt">Out[66]:</div>
 
 
 
@@ -13358,36 +12593,36 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
   </thead>
   <tbody>
     <tr>
-      <th>Beverly Garland's Holiday Inn</th>
-      <td>78682</td>
-      <td>3.431373</td>
-      <td>3.983193</td>
-      <td>4.168067</td>
-      <td>0.753501</td>
-      <td>0.434174</td>
-      <td>3.809524</td>
-      <td>3.476190</td>
+      <th>Hotel Erwin, a Joie de Vivre hotel</th>
+      <td>2516007</td>
+      <td>3.348485</td>
+      <td>4.126263</td>
+      <td>4.065657</td>
+      <td>0.025253</td>
+      <td>0.025253</td>
+      <td>3.818182</td>
+      <td>3.646465</td>
       <td>Los Angeles</td>
-      <td>CA 91602</td>
-      <td>91602</td>
-      <td>$163</td>
-      <td>$241</td>
+      <td>CA 90291</td>
+      <td>90291</td>
+      <td>$256</td>
+      <td>$404</td>
     </tr>
     <tr>
-      <th>Beverly Garland's Holiday Inn</th>
-      <td>2516013</td>
-      <td>3.450980</td>
-      <td>3.941176</td>
-      <td>4.126050</td>
-      <td>0.728291</td>
-      <td>0.400560</td>
-      <td>3.795518</td>
-      <td>3.535014</td>
+      <th>Hotel Erwin, a Joie de Vivre hotel</th>
+      <td>81170</td>
+      <td>3.310160</td>
+      <td>4.139037</td>
+      <td>4.064171</td>
+      <td>0.026738</td>
+      <td>0.026738</td>
+      <td>3.823529</td>
+      <td>3.636364</td>
       <td>Los Angeles</td>
-      <td>CA 91602</td>
-      <td>91602</td>
-      <td>$163</td>
-      <td>$241</td>
+      <td>CA 90291</td>
+      <td>90291</td>
+      <td>$256</td>
+      <td>$404</td>
     </tr>
   </tbody>
 </table>
@@ -13402,12 +12637,12 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[67]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#hotel_ratings.reset_index(&#39;hotel id&#39;, inplace=True)</span>
-<span class="n">hotel_ratings</span><span class="p">[</span><span class="n">hotel_ratings</span><span class="p">[</span><span class="s1">&#39;hotel id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">78682</span><span class="p">]</span>
-<span class="n">test_hotel</span> <span class="o">=</span> <span class="n">hotel_ratings</span><span class="p">[</span><span class="n">hotel_ratings</span><span class="p">[</span><span class="s1">&#39;hotel id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">78682</span><span class="p">][[</span><span class="s1">&#39;rooms&#39;</span><span class="p">,</span><span class="s1">&#39;service&#39;</span><span class="p">,</span> <span class="s1">&#39;cleanliness&#39;</span><span class="p">,</span> <span class="s1">&#39;front desk&#39;</span><span class="p">,</span> <span class="s1">&#39;business service&#39;</span><span class="p">,</span> 
+<span class="n">hotel_ratings</span><span class="p">[</span><span class="n">hotel_ratings</span><span class="p">[</span><span class="s1">&#39;hotel id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2516007</span><span class="p">]</span>
+<span class="n">test_hotel</span> <span class="o">=</span> <span class="n">hotel_ratings</span><span class="p">[</span><span class="n">hotel_ratings</span><span class="p">[</span><span class="s1">&#39;hotel id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2516007</span><span class="p">][[</span><span class="s1">&#39;rooms&#39;</span><span class="p">,</span><span class="s1">&#39;service&#39;</span><span class="p">,</span> <span class="s1">&#39;cleanliness&#39;</span><span class="p">,</span> <span class="s1">&#39;front desk&#39;</span><span class="p">,</span> <span class="s1">&#39;business service&#39;</span><span class="p">,</span> 
                                                                 <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;location&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
 <span class="n">test_hotel</span>
 </pre></div>
@@ -13422,14 +12657,14 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[29]:</div>
+<div class="prompt output_prompt">Out[67]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[3.43137255, 3.98319328, 4.16806723, 0.7535014 , 0.43417367,
-        3.80952381, 3.47619048]])</pre>
+<pre>array([[3.34848485, 4.12626263, 4.06565657, 0.02525253, 0.02525253,
+        3.81818182, 3.64646465]])</pre>
 </div>
 
 </div>
@@ -13449,11 +12684,11 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">rec_hotel</span> <span class="o">=</span> <span class="n">kdtree_closest_point</span><span class="p">(</span><span class="n">kdtree</span><span class="p">,</span> <span class="n">test_hotel</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">rec_hotel</span>
+<span class="o">%</span><span class="k">time</span> rec_hotel
 </pre></div>
 
 </div>
@@ -13466,14 +12701,26 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[30]:</div>
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>CPU times: user 5 µs, sys: 1e+03 ns, total: 6 µs
+Wall time: 10 µs
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[73]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([3.47011952, 4.12881806, 4.24966799, 0.71978752, 0.37848606,
-       3.75033201, 3.44887118])</pre>
+<pre>array([3.34848485, 4.12626263, 4.06565657, 0.02525253, 0.02525253,
+       3.81818182, 3.64646465])</pre>
 </div>
 
 </div>
@@ -13484,7 +12731,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[69]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">recommend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">training_points</span> <span class="o">==</span> <span class="n">rec_hotel</span><span class="p">)</span>
@@ -13498,7 +12745,53 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">hotel_ratings</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">recommend</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[70]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>hotel id                  2514393
+rooms                     3.41983
+service                   3.34402
+cleanliness               3.79592
+front desk                1.04665
+business service         0.676385
+value                     3.05831
+location                  3.61224
+city                New York City
+state                    NY 10014
+zip code                    10014
+low price                    $344
+high price                   $589
+Name: Hotel Gansevoort, dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="p">(</span><span class="s1">&#39;Recommended hotel with hotel id {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hotel_ratings</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">recommend</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;hotel id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)))</span>
@@ -13518,7 +12811,7 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Recommended hotel with hotel id 183636
+<pre>Recommended hotel with hotel id 2514393
 </pre>
 </div>
 </div>
@@ -13529,10 +12822,46 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[78]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">hotel_ratings</span><span class="p">[</span><span class="n">hotel_ratings</span><span class="p">[</span><span class="s1">&#39;hotel id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">183636</span><span class="p">]</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">rec_hotel</span> <span class="o">=</span> <span class="n">hotel_ratings</span><span class="p">[</span><span class="n">hotel_ratings</span><span class="p">[</span><span class="s1">&#39;hotel id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2514393</span><span class="p">][[</span><span class="s1">&#39;rooms&#39;</span><span class="p">,</span> <span class="s1">&#39;service&#39;</span><span class="p">,</span> <span class="s1">&#39;cleanliness&#39;</span><span class="p">,</span> <span class="s1">&#39;front desk&#39;</span><span class="p">,</span> <span class="s1">&#39;business service&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;location&#39;</span><span class="p">]]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We evaluate this recommendation by calculating the RMSE (the Root Mean Squared Error) to see how far off our recommended hotel's rating structure is from our favorite.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[82]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">rmse</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">test</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">((</span><span class="n">rec</span> <span class="o">-</span> <span class="n">test</span><span class="p">))</span><span class="o">/</span><span class="mf">7.0</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[83]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">rmse</span><span class="p">(</span><span class="n">rec_hotel</span><span class="p">,</span> <span class="n">test_hotel</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13545,84 +12874,46 @@ The main goal is to recommend the most similar hotel to a selected hotel. There 
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[34]:</div>
+<div class="prompt output_prompt">Out[83]:</div>
 
 
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
 
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>hotel id</th>
-      <th>rooms</th>
-      <th>service</th>
-      <th>cleanliness</th>
-      <th>front desk</th>
-      <th>business service</th>
-      <th>value</th>
-      <th>location</th>
-      <th>city</th>
-      <th>state</th>
-      <th>zip code</th>
-      <th>low price</th>
-      <th>high price</th>
-    </tr>
-    <tr>
-      <th>hotel name</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Sheraton Vancouver - Wall Centre</th>
-      <td>183636</td>
-      <td>3.025522</td>
-      <td>3.313225</td>
-      <td>3.851508</td>
-      <td>0.716937</td>
-      <td>0.429234</td>
-      <td>3.139211</td>
-      <td>3.241299</td>
-      <td>British Columbia V6Z 2R9</td>
-      <td>Canada</td>
-      <td>V6Z 2R9</td>
-      <td>$205</td>
-      <td>$279</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>0.4860846722988549</pre>
 </div>
 
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src='radar.jpg' style="float: right; height: 400px;" alt="Drawing">
+From over thousands of hotels, we have found a hotel (<strong>Hotel Gansevoort</strong>) that has been rate as highly on <em>value</em>, <em>cleanliness</em>, and <em>location</em> almost same as our <em>favorite</em> hotel, <strong>Hotel Erwin, a Joie de Vivre hotel</strong>. It took us only 10 microseconds wall time, instead of possibly hours of waiting for pairwise computation of similarities. Pairwise computing also eats up most of pc's memory and will cause memory error in python kernels.</p>
+<p><strong>Next Steps</strong>:</p>
+<ol>
+<li>Use heapmax to get k nearest neighbors, say, 5 most similar hotels based on the 7 dimensions.</li>
+<li>Optimize hyper-parameter k by running grid search and cross validation, evaluated by RMSE.</li>
+<li>Can run this on subsets of hotels that are in the same zipcode.</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
+
+</div>
 </div>
 </div>
 
