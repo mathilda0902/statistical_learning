@@ -3,11 +3,13 @@
 # sub ratings (only 7), similarity among the hotels
 # high frequency words: similarity among the travelers
 
-
-import math
 import pprint
 import numpy as np
+import pandas as pd
+import random
 import sklearn.preprocessing as pp
+from numpy import linalg
+
 
 ppr = pprint.PrettyPrinter(indent=4)
 
@@ -15,85 +17,6 @@ def euc_distance(point1, point2):
     diff = np.subtract(point1, point2)
     dist = np.linalg.norm(diff)
     return dist
-
-def _userItemMatrix(arr):
-	df = df[['user', 'hotel id', 'ratings']]
-	pdf = pd.pivot_table(df, index=['user'], columns = 'hotel id', values = "ratings").fillna(0)
-	mat = csr_matrix(pdf)
-    mat = df.astype(float).values
-	return mat
-
-def userCosineSim(arr):
-    # base similarity matrix (all dot products)
-    # replace this with A.dot(A.T).toarray() for sparse representation
-    similarity = np.dot(arr, arr.T)
-    # squared magnitude of preference vectors (number of occurrences)
-    square_mag = np.diag(similarity)
-    # inverse squared magnitude
-    inv_square_mag = 1 / square_mag
-    # if it doesn't occur, set it's inverse magnitude to zero (instead of inf)
-    inv_square_mag[np.isinf(inv_square_mag)] = 0
-    # inverse of the magnitude
-    inv_mag = np.sqrt(inv_square_mag)
-    # cosine similarity (elementwise multiply by inverse magnitudes)
-    cosine = similarity * inv_mag
-    cosine = cosine.T * inv_mag
-    return cosine
-
-def itemCosineSim(arr):
-    arr = arr.T
-    # base similarity matrix (all dot products)
-    # replace this with A.dot(A.T).toarray() for sparse representation
-    similarity = np.dot(arr, arr.T)
-    # squared magnitude of preference vectors (number of occurrences)
-    square_mag = np.diag(similarity)
-    # inverse squared magnitude
-    inv_square_mag = 1 / square_mag
-    # if it doesn't occur, set it's inverse magnitude to zero (instead of inf)
-    inv_square_mag[np.isinf(inv_square_mag)] = 0
-    # inverse of the magnitude
-    inv_mag = np.sqrt(inv_square_mag)
-    # cosine similarity (elementwise multiply by inverse magnitudes)
-    cosine = similarity * inv_mag
-    cosine = cosine.T * inv_mag
-    return cosine
-
-'''
-A = np.array([[ 4.,  5.,  4.],
-       [ 3.,  4.,  3.],
-       [ 1.,  1.,  1.],
-       [ 2.,  5.,  5.],
-       [ 4.,  2.,  2.]], dtype=np.longdouble)
-In [181]: cosineSim(mat)
-Out[181]:
-array([[ 1.        ,  0.99948387,  0.99413485,  0.95530392,  0.91925472],
-       [ 0.99948387,  1.        ,  0.99014754,  0.95685806,  0.91018205],
-       [ 0.99413485,  0.99014754,  1.        ,  0.94280904,  0.94280904],
-       [ 0.95530392,  0.95685806,  0.94280904,  1.        ,  0.77777778],
-       [ 0.91925472,  0.91018205,  0.94280904,  0.77777778,  1.        ]])
-'''
-'''
-from sklearn.metrics import pairwise_distances
-from scipy.spatial.distance import cosine
-dist_out = 1-pairwise_distances(A, metric="cosine")
-'''
-'''
-def closest_point(all_points, new_point):
-    best_point = None
-    best_distance = None
-
-    for current_point in all_points:
-        current_distance = distance(new_point, current_point)
-
-        if best_distance is None or current_distance < best_distance:
-            best_distance = current_distance
-            best_point = current_point
-
-    return best_point
-'''
-
-def angDist(arr):
-    pass
 
 def build_kdtree(points, depth=0):
     n = len(points)
@@ -161,6 +84,10 @@ def kdtree_closest_point(root, point, depth=0):
 
     return best
 
+def accuracy(rec, test):
+    return np.sqrt(np.linalg.norm((rec - test))/7.0)
+
+
 # run on hotel info with 7d tree:
 '''
 In [84]: test
@@ -173,22 +100,38 @@ Out[84]:
 4           99774    4.0      4.0          4.0         0.0               0.0
 5           99774    4.0      4.0          4.0         0.0               0.0
 '''
+test = pd.read_csv('hotel/unique_popular_3k_hotels.csv')
+test = test[['hotel id', 'rooms', 'service', 'cleanliness', 'front desk', 'business service', 'value', 'location']]
+test = test.groupby('hotel id').mean()
 
-test.groupby('hotel id').mean()
-training = test[:100]
-test = test[100:200]
+training = test[:2000]
+test = test[2000:]
 training_points = training.as_matrix()
 test_points = test.as_matrix()
 test_hotel1 = test_points[0]
 test_hotel2 = test_points[1]
-test_hotel3 = test_points[2]
+test_hotel3 = test_points[50]
 
 k = 7
 kdtree = build_kdtree(training_points)
 rec_hotel1 = kdtree_closest_point(kdtree, test_hotel1)
 
-# rec 85 in training_points = nyc[85]: hotel id == 217622
-# test[0] in nyc[200]: hotel id == 2514392
+rmse = (accuracy(rec_hotel1, test_hotel1) + accuracy(rec_hotel2, test_hotel2)
+        + accuracy(rec_hotel3, test_hotel3)) / 3.0
+
+np.argwhere(training_points == rec_hotel1)
+np.argwhere(test_points == test_hotel1)
+
+test.iloc[150]
+test.iloc[78]
+
+hotel_names[hotel_names['hotel id'] == 80747]
+hotel_names[hotel_names['hotel id'] == 85031]
+
+# rec 85 in training_points = nyc[90]: hotel id == 79868
+# test[0] in nyc[101]: hotel id == 81394
+#hotel id == 81087
+#hotel id == 81397
 
 '''
 In [120]: hotel_names[hotel_names['hotel id'] == 79868]
