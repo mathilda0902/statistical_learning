@@ -15,9 +15,6 @@ from surprise.model_selection import cross_validate
 from surprise.model_selection import train_test_split
 
 from surprise import BaselineOnly
-from surprise import KNNBasic
-from surprise import KNNWithMeans
-from surprise import KNNWithZScore
 from surprise import SVD
 from surprise import NMF
 from surprise import SlopeOne
